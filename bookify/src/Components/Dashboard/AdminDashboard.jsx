@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import "./dashboard.css"
 import ActivityComponent from './ActivityComponent';
+import { Link } from 'react-router-dom'
 const AdminDashboard = () => {
     let body;
     let modeToggle;
@@ -58,43 +59,38 @@ const AdminDashboard = () => {
 
         <div className="menu-items">
             <ul className="nav-links">
-                <li><a href="#">
+                <li><Link to="/dashboard">
                     <i className="uil uil-estate"></i>
                     <span className="link-name">Dahsboard</span>
-                </a></li>
-                <li><a href="#">
+                </Link></li>
+                <li><Link to="createuser">
                     <i class="uil uil-user-plus"></i>
-                    <span className="link-name">Create Admin</span>
-                </a></li>
-                <li><a href="#">
+                    <span className="link-name">Create User</span>
+                </Link></li>
+                <li><Link to="addproducts">
                     <i class="uil uil-book-medical"></i>
                     <span className="link-name">Add Products</span>
-                </a></li>
-                <li><a href="#">
+                </Link></li>
+                <li><Link to="/allproducts">
                     <i className="uil uil-notebooks"></i>
                     <span className="link-name">Getall Products</span>
-                </a></li>
-                <li><a href="#">
+                </Link></li>
+                <li><Link to="alluser">
                     <i className="uil uil-user"></i>
                     <span className="link-name">GetAll Users</span>
-                </a></li>
-                <li><a href="#">
+                </Link></li>
+                <li><Link to="recentsales">
                 <i class="uil uil-shopping-basket"></i>
                     <span className="link-name">Recent Sales</span>
-                </a></li>
+                </Link></li>
             </ul>
             
             <ul className="logout-mode">
-                <li><a href="#">
-                    <i className="uil uil-signout"></i>
-                    <span className="link-name">Logout</span>
-                </a></li>
-
                 <li className="mode">
-                    <a href="#">
+                    <Link>
                         <i className="uil uil-moon"></i>
                     <span className="link-name">Dark Mode</span>
-                </a>
+                </Link>
 
                 <div className="mode-toggle" onClick={modeToggleFunction}>
                   <span className="switch"></span>

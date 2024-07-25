@@ -4,7 +4,6 @@ const generateToken = require("../Config/generateToken");
 
 const registerUser = asyncHandler(async (req, res)=> {
     const {name, email, password, pic} = req.body;
-    console.log("_________________________________________")
 
     if( !name || !email || !password) {
         res.status(400);
@@ -52,4 +51,39 @@ const loginUser = asyncHandler(async (req, res)=> {
         throw new Error("No user found with entered credentials");
     }
 })
-module.exports = {registerUser, loginUser}
+
+const createUser = asyncHandler(async(req, res)=> {
+    const { name, email, password, pic, role } = req.body;
+    if( !name || !email || !password) {
+        res.status(400);
+        throw new Error("please enter all the fields");
+    }
+
+    const userExists = await User.findOne({ email });
+
+    if( userExists ) {
+        res.status(200);
+        throw new Error("User already Exists")
+    }
+
+    const user = await User.create({name, email, password, pic, role});
+
+    if( user ) {
+        res.status(200).json({
+            _id: user._id,
+            name: user.name,
+            email: user.email,
+            pic: user.pic,
+            role: role,
+        });
+    } else {
+        res.status(400);
+        throw new Error("Faied to create user")
+    }
+})
+
+const getAllUsers = asyncHandler(async(req, res) => {
+    const allUsers = await User.find({});
+    res.send(allUsers)
+})
+module.exports = {registerUser, loginUser, createUser, getAllUsers}

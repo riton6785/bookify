@@ -1,9 +1,14 @@
 import { useDisclosure, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, Image, ModalFooter, Text, Button } from '@chakra-ui/react';
 import React from 'react'
+import { useNavigate } from 'react-router-dom';
 
 const Profile = ({children}) => {
     const user = JSON.parse(localStorage.getItem("user-info"));
     const {isOpen, onOpen, onClose} = useDisclosure();
+    const navigate = useNavigate();
+    const myProfile = ()=> {
+        navigate("myprofile");
+    }
     return (
         <>
             {
@@ -40,7 +45,7 @@ const Profile = ({children}) => {
                 </ModalBody>
                 <ModalFooter>
                     <Button colorScheme="blue" mr={3} onClick={onClose}>Close</Button>
-                    <Button variant="ghost">Account</Button>
+                    <Button variant="ghost" onClick={myProfile}>Account</Button>
                 </ModalFooter>
             </ModalContent>
         </Modal>
