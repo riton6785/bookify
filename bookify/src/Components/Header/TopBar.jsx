@@ -8,10 +8,14 @@ import { ChevronDownIcon } from "@chakra-ui/icons"
 import React from 'react'
 import AuthenticationModel from './AuthenticationModel';
 import Profile from './Profile';
+import { useDispatch } from 'react-redux';
+import { setUser } from '../../Redux/slicer';
 
 const TopBar = () => {
+    const dispatch = useDispatch();
     const logoutHandler = ()=>{
-        localStorage.removeItem('user-info');   
+        localStorage.removeItem('user-info');
+        dispatch(setUser(null));
     }
   return (
     <>

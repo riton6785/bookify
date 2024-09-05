@@ -1,6 +1,8 @@
 import { Button, FormControl, FormLabel, Input, InputGroup, InputRightElement, VStack, useToast } from '@chakra-ui/react'
 import React, { useState } from 'react'
 import  axios  from 'axios'
+import { useDispatch } from 'react-redux'
+import { setUser } from '../../Redux/slicer'
 
 const Login = ({onClose}) => {
   const [show, setShow ] = useState(false);
@@ -8,6 +10,7 @@ const Login = ({onClose}) => {
   const [password, setPassword] = useState();
   const [loading, setLoading] = useState(false);
   const toast = useToast();
+  const dispatch = useDispatch();
 
     const handleClick = ()=>{setShow(!show)}
   const submitHandler = async()=>{
@@ -24,6 +27,7 @@ const Login = ({onClose}) => {
         position: 'bottom'
       })
       localStorage.setItem('user-info', JSON.stringify(response.data))
+      dispatch(setUser(response.data));
       setLoading(false)
     } catch (error) {
       toast({

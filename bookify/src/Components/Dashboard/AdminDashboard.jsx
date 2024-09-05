@@ -71,7 +71,7 @@ const AdminDashboard = () => {
                     <i class="uil uil-book-medical"></i>
                     <span className="link-name">Add Products</span>
                 </Link></li>
-                <li><Link to="/allproducts">
+                <li><Link to="allproducts">
                     <i className="uil uil-notebooks"></i>
                     <span className="link-name">Getall Products</span>
                 </Link></li>

@@ -44,10 +44,11 @@ const loginUser = asyncHandler(async (req, res)=> {
             name: user.name,
             email: user.email,
             pic: user.pic,
+            role: user.role,
             token: generateToken(user._id)
         })
     } else {
-        res.status(200);
+        res.status(400);
         throw new Error("No user found with entered credentials");
     }
 })
@@ -74,7 +75,7 @@ const createUser = asyncHandler(async(req, res)=> {
             name: user.name,
             email: user.email,
             pic: user.pic,
-            role: role,
+            role: user.role,
         });
     } else {
         res.status(400);
