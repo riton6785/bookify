@@ -9,6 +9,8 @@ import {useDispatch, useSelector } from "react-redux"
 import { setUser } from './Redux/slicer'
 import ShowallProduct from './Components/Products/ShowallProduct'
 import ShowAllUsers from './Components/Users/ShowAllUsers'
+import Homepage from './Components/HomePage/Homepage'
+import ProductDetailUser from './Components/Products/ProductDetailUser'
 
 const App = () => {
   const dispatch = useDispatch();
@@ -23,13 +25,15 @@ const App = () => {
   return (
     <>  
       <BrowserRouter>
+        <TopBar/>
         <Routes>
-          <Route path='/' element={<TopBar/>}/>
+          <Route path='/' element={<Homepage/>}/>
           <Route path="/dashboard" element={<AdminDashboard/>}/>
           <Route path="/dashboard/addproducts" element={<AddProduct/>}/>
           <Route path="/dashboard/createuser" element={<CreateUser/>}/>
           <Route path="/dashboard/allproducts" element={<ShowallProduct/>}/>
           <Route path="/dashboard/alluser" element={<ShowAllUsers/>}/>
+          <Route path="/products/:id" element={<ProductDetailUser/>}/>
         </Routes>
       </BrowserRouter>
     </>

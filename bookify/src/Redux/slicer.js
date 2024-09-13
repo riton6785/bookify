@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
   userInfo: JSON.parse(localStorage.getItem("user-info")),
+  cart: []
 }
 
 export const counterSlice = createSlice({
@@ -9,12 +10,16 @@ export const counterSlice = createSlice({
   initialState,
   reducers: {
     setUser: (state, action) => {
-      state.userInfo = action.payload
+      state.userInfo = action.payload;
+    },
+    setCart: (state, action) => {
+      state.cart.push(action.payload);
     },
   },
 })
 
 // Action creators are generated for each case reducer function
-export const { setUser } = counterSlice.actions
+export const { setUser } = counterSlice.actions;
+export const { setCart } = counterSlice.actions;
 
-export default counterSlice.reducer
+export default counterSlice.reducer;

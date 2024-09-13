@@ -1,6 +1,8 @@
 import { Button, FormControl, FormLabel, Input, InputGroup, InputRightElement, VStack, useToast } from '@chakra-ui/react';
 import  axios  from 'axios'
 import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { setUser } from '../../Redux/slicer'
 
 const SIgnup = ({onClose}) => {
   const [show, setShow] = useState(false);
@@ -11,6 +13,7 @@ const SIgnup = ({onClose}) => {
   const [pic, setPic] = useState();
   const [loading, setLoading] = useState(false);
   const toast = useToast();
+  const dispatch = useDispatch()
 
   const handleClick = () => setShow(!show);
 
@@ -91,8 +94,8 @@ const SIgnup = ({onClose}) => {
       isClosable: true,
       position: 'bottom'
     })
-    debugger
     localStorage.setItem('user-info', JSON.stringify(response.data))
+    dispatch(setUser(response.data));
     setLoading(false);
     onClose()
    } catch (error) {

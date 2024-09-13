@@ -29,4 +29,8 @@ const getAllBooks = asyncHandler(async(req, res)=>{
     res.send(allBooks)
 })
 
-module.exports = {createBookRecord, getAllBooks}
+const bookById = asyncHandler(async(req, res) => {
+    const book = await Book.findById(req.query.id)
+    res.send(book)
+})
+module.exports = {createBookRecord, getAllBooks, bookById}
