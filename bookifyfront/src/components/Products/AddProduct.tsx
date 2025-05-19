@@ -40,7 +40,6 @@ const AddProduct = () => {
           }).then((res)=>res.json())
             .then((data)=> {
               setPic(data.url.toString())
-              console.log(pic)
               setLoading(false)
             })
             .catch((error)=> {

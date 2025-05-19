@@ -6,6 +6,7 @@ const cors = require("cors");
 
 const userRoutes = require('./routes/userRoutes')
 const bookRoutes = require('./routes/bookRoutes')
+const cartRoutes = require('./routes/cart_routes');
 
 dotenv.config()
 connectDB()
@@ -15,6 +16,7 @@ app.use(express.json())
 
 app.use("/api/user", userRoutes);
 app.use("/api/book", bookRoutes);
+app.use("/api/cart", cartRoutes);
 app.get("/",(req,res)=>{
     res.send("<h1>welcome here</h1>")
 })

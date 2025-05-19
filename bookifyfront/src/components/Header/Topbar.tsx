@@ -9,18 +9,32 @@ import { Box, Button, Menu,
    } from '@chakra-ui/react';
 import { ChevronDownIcon } from "@chakra-ui/icons"
 import SideDrawer from './SideDrawer';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { logoutUser } from '../../Redux/slice';
 import Profile from './Profile';
 import { Link } from 'react-router-dom';
 import { FaCartArrowDown } from "react-icons/fa";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const TopBar = () => {
 
     const dispatch = useDispatch();
     const toast = useToast();
-    const [cartCount, setCartCount] = useState<number>(0);
+    const [cartCount, setCartCount] = useState<number>(0)
+    const cartItems = useSelector((state: {cartReducer: CartState}) => state.cartReducer.cart)
+
+    const getCartCount = () => {
+        let count = 0;
+        cartItems.forEach((item) => {
+            count += item.quantity;
+        });
+        setCartCount(count);
+    }
+
+    useEffect(()=> {
+        getCartCount();
+    },)
+
     const logoutHandler = ()=>{
         dispatch(logoutUser());
         localStorage.removeItem('user-info');

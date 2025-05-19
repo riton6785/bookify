@@ -87,4 +87,33 @@ const getAllUsers = asyncHandler(async(req, res) => {
     const allUsers = await User.find({});
     res.send(allUsers)
 })
-module.exports = {registerUser, loginUser, createUser, getAllUsers}
+
+const toggleWishList = asyncHandler(async(req, res) => {
+    const { bookId } = req.body;
+    const user = await User.findById(req.user._id);
+    if(!user) {
+        return res.status(400).json({messahe: "User not found Please login firt"});
+    }
+
+    if (user.wishList.includes(bookId)) {
+        const index = user.wishList.indexOf(bookId);
+        user.wishList.splice(index, 1);
+        await user.save();
+        return res.status(200).json({message: "Book removed form wishList"});
+    } else {
+        user.wishList.push(bookId);
+        await user.save();
+        return res.status(200).json({message: "Book added to wishList"});
+    }
+})
+
+const getWishList = asyncHandler(async(req, res) => {
+    const user = await User.findById(req.user._id);
+    const wishListItems = user.wishList;
+    if(!wishListItems) {
+        return res.status(200).json({message: "No items in wishList"});
+    } else {
+        return res.status(200).json({wishListItems});
+    }
+})
+module.exports = {registerUser, loginUser, createUser, getAllUsers, toggleWishList, getWishList}

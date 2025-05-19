@@ -27,6 +27,22 @@ interface Book {
     __v: number;
 }
 
-type Cart = {
+type CartProduct = {
+    _id: string,
+    name: string;
+    pic: string;
+    price: number
+}
+type CartData = {
+    product: CartProduct;
+    quantity: number;
+}
+
+type Wishlist = {
     id: string;
+}
+
+interface CartState {
+    cart: CartData[];
+    wishlist: Wishlist[];
 }

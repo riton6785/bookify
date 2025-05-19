@@ -17,7 +17,6 @@ const SIgnup = ({onClose}: {onClose: () => void;}) => {
 
   const handleImage = (pic: File)=> {
     setLoading(true);
-    console.log(pic, typeof(pic))
     if ( pic === undefined) {
       toast({
         title: "please select a image",
@@ -40,11 +39,9 @@ const SIgnup = ({onClose}: {onClose: () => void;}) => {
       }).then((res)=>res.json())
         .then((data)=> {
           setProfilePic(data.url.toString())
-          console.log(pic)
           setLoading(false)
         })
         .catch((error)=> {
-          console.log(error)
           setLoading(false)
         })
        

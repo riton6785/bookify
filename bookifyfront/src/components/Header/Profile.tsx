@@ -3,7 +3,6 @@ import React, { ReactNode } from 'react'
 import { Navigate, useNavigate } from 'react-router-dom';
 
 const Profile = ({children}: {children: ReactNode}) => {
-    debugger;
     const user: User = JSON.parse(localStorage.getItem("user-info"));
     const {isOpen, onOpen, onClose} = useDisclosure();
     const navigate = useNavigate();
