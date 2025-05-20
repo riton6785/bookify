@@ -1,4 +1,4 @@
-import { Box, Button, ButtonGroup, Card, CardBody, CardFooter, Divider, Heading, HStack, IconButton, Image, Stack, Text, useToast } from "@chakra-ui/react"
+import { Box, Button, ButtonGroup, Card, CardBody, CardFooter, Divider, Heading, HStack, IconButton, Image, position, Stack, Text, useToast } from "@chakra-ui/react"
 import { FaHeart } from 'react-icons/fa';
 
 import React, { useState } from 'react'
@@ -47,7 +47,21 @@ const ProductCard = ({book, key}: {book: Book, key: number}) => {
       await axios.post("http://localhost:2000/api/cart/addtocart", {
         bookId: book._id
       }, config)
-    } catch (error) { 
+      toast({
+          title: "Item added to cart",
+          status: "success",
+          isClosable: true,
+          position: "top",
+          duration: 5000,
+        })
+    } catch (error) {
+      toast({
+        title: "Error adding item to cart",
+        status: "error",
+        isClosable: true,
+        position: "top",
+        duration: 5000,
+      })
     }
   }
 
@@ -61,6 +75,7 @@ const ProductCard = ({book, key}: {book: Book, key: number}) => {
         duration: 5000,
       })
     }
+    const quantity = cartItems.find((item: CartData)=> item.product._id === book._id)?.quantity
     const prepareCartData: CartData = {
       product: {
         _id: book._id,
@@ -68,7 +83,7 @@ const ProductCard = ({book, key}: {book: Book, key: number}) => {
         pic: book.pic,
         price: book.price
       },
-      quantity: 1
+      quantity: quantity ? quantity: 0
     }
     dispatch(removeFromCart(prepareCartData));
 
@@ -79,9 +94,17 @@ const ProductCard = ({book, key}: {book: Book, key: number}) => {
           Authorization: `Bearer ${user?.token}`
         }
       }
-      const {data} = await axios.post("http://localhost:2000/api/cart/removeitem", {
+      await axios.post("http://localhost:2000/api/cart/removeitem", {
         productId: book._id,
+        quantity
       }, config)
+      toast({
+          title: "Item removed from cart",
+          status: "success",
+          isClosable: true,
+          position: "top",
+          duration: 5000,
+        })
     } catch (error) {
       toast({
         title: "Error removing item from cart",
@@ -113,7 +136,14 @@ const ProductCard = ({book, key}: {book: Book, key: number}) => {
             Authorization: `Bearer ${user?.token}`
           }
         }
-        const {data} = await axios.post("http://localhost:2000/api/user/toggewishlist",{bookId: book._id}, config)
+        await axios.post("http://localhost:2000/api/user/toggewishlist",{bookId: book._id}, config)
+        toast({
+          title: "Wishlist toggled successfully",
+          status: "success",
+          isClosable: true,
+          position: "top",
+          duration: 5000,
+        })
       } catch (error) {
         toast({
           title: "Error adding item to wishlist",

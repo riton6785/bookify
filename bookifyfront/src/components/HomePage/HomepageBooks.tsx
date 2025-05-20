@@ -26,63 +26,8 @@ const HomepageBooks = () => {
       }
     };
 
-  const fetchCarts = async (): Promise<void> => {
-    if (!user) {
-      return;
-    }
-    try {
-      const config = {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${user?.token}`
-        }
-      }
-      const {data} = await axios.get("http://localhost:2000/api/cart/getcartitems", config);
-      if (data) {
-        dispatch(addToCart(data));
-      }
-    } catch(error) {
-      toast({
-        title: "Error fetching Cart",
-        status: "error",
-        duration: 5000,
-        isClosable: true,
-        position: "bottom",
-      })
-    }
-  }
-
-  const fetchWishList = async (): Promise<void> => {
-    if (!user) {
-      return;
-    }
-
-    try {
-      const config = {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${user?.token}`
-        }
-      }
-      const {data} = await axios.get("http://localhost:2000/api/user/getwishlist", config);
-      for (const itemId of data.wishListItems) {
-        dispatch(toggleWishList(itemId))
-      }
-    } catch (error) {
-      toast({
-        title: "Error fetching WishList",
-        status: "error",
-        duration: 5000,
-        isClosable: true,
-        position: "bottom",
-      })
-      
-    }
-  }
   useEffect(() => {
     fetchBooks();
-    fetchCarts();
-    fetchWishList();
   }, []);
   return <>
     <Box display={"flex"} flexWrap={"wrap"} justifyContent={"space-between"} >

@@ -28,10 +28,10 @@ const cartReducer = createSlice({
             const itemId = action.payload.product._id;
             const existingItem = state.cart.find((item)=> item.product._id === itemId);
             if (existingItem) {
-                if (existingItem.quantity === 1) {
+                if (existingItem.quantity === action.payload.quantity) {
                     state.cart = state.cart.filter((item)=> item.product._id !== itemId);
                 } else {
-                    existingItem.quantity -= 1;
+                    existingItem.quantity -= action.payload.quantity;
                 }
             }
         },

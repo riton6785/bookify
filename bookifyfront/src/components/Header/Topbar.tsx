@@ -15,6 +15,8 @@ import Profile from './Profile';
 import { Link } from 'react-router-dom';
 import { FaCartArrowDown } from "react-icons/fa";
 import { useEffect, useState } from 'react';
+import { addToCart, toggleWishList } from '../../Redux/cartslice';
+import axios from 'axios';
 
 const TopBar = () => {
 
@@ -22,6 +24,8 @@ const TopBar = () => {
     const toast = useToast();
     const [cartCount, setCartCount] = useState<number>(0)
     const cartItems = useSelector((state: {cartReducer: CartState}) => state.cartReducer.cart)
+    const user: User | null = useSelector((state: {userReducer: StateType})=> state.userReducer.user);
+    
 
     const getCartCount = () => {
         let count = 0;
@@ -31,9 +35,68 @@ const TopBar = () => {
         setCartCount(count);
     }
 
+    const fetchCarts = async (): Promise<void> => {
+    if (!user) {
+      return;
+    }
+    try {
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${user?.token}`
+        }
+      }
+      const {data} = await axios.get("http://localhost:2000/api/cart/getcartitems", config);
+      if (data) {
+        dispatch(addToCart(data));
+      }
+    } catch(error) {
+      toast({
+        title: "Error fetching Cart",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom",
+      })
+    }
+  }
+
+  const fetchWishList = async (): Promise<void> => {
+      if (!user) {
+        return;
+      }
+  
+      try {
+        const config = {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${user?.token}`
+          }
+        }
+        const {data} = await axios.get("http://localhost:2000/api/user/getwishlist", config);
+        for (const itemId of data.wishListItems) {
+          dispatch(toggleWishList(itemId))
+        }
+      } catch (error) {
+        toast({
+          title: "Error fetching WishList",
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+          position: "bottom",
+        })
+        
+      }
+    }
+
+  useEffect(() => {
+    fetchCarts();
+    fetchWishList();
+  }, [])
+
     useEffect(()=> {
         getCartCount();
-    },)
+    },[cartItems])
 
     const logoutHandler = ()=>{
         dispatch(logoutUser());
@@ -68,27 +131,29 @@ const TopBar = () => {
             px="10px"
             py="5px"
         >
-            <Box position="relative" background="white" mx={5} p={1}>
+            <Link to="/mycart">
+                <Box position="relative" background="white" mx={5} p={1}>
                 <FaCartArrowDown size={24}/>
 
                 {/* Badge Count */}
-                <Box
-                    position="absolute"
-                    top="-1"
-                    right="-1"
-                    background="red.500"
-                    color="white"
-                    borderRadius="full"
-                    fontSize="xs"
-                    w="18px"
-                    h="18px"
-                    display="flex"
-                    alignItems="center"
-                    justifyContent="center"
-                >
-                    {cartCount}
+                    <Box
+                        position="absolute"
+                        top="-1"
+                        right="-1"
+                        background="red.500"
+                        color="white"
+                        borderRadius="full"
+                        fontSize="xs"
+                        w="18px"
+                        h="18px"
+                        display="flex"
+                        alignItems="center"
+                        justifyContent="center"
+                    >
+                        {cartCount}
+                    </Box>
                 </Box>
-            </Box>
+            </Link>
             <Menu>
             <MenuButton as={Button} rightIcon={<ChevronDownIcon />} colorScheme="linkedin" margin={2} borderWidth={2}>
                 Profile

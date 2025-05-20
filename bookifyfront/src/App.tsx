@@ -6,6 +6,7 @@ import AdminDashboard from './components/Dashboard/AdminDashboard'
 import AddProduct from './components/Products/AddProduct'
 import HomePage from './components/HomePage/HomePage'
 import Bookdetails from './components/Products/Bookdetails'
+import Cart from './components/Cart/Cart'
 
 const App = () => {
   return (
@@ -17,6 +18,7 @@ const App = () => {
         <Route path="/dashboard" element={<AdminDashboard/>}/>
         <Route path="/dashboard/addproducts" element={<AddProduct/>}/>
         <Route path="/book/:id" element={<Bookdetails/>}/>
+        <Route path="/mycart" element={<Cart/>}/>
       </Routes>
     </BrowserRouter>
   )
