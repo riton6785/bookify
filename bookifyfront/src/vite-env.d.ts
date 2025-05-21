@@ -18,12 +18,15 @@ interface Book {
     price:  number;
     author: string;
     description: string;
-    stock: number;
     publisher: string;
-    isPublished: boolean;
     pic: string;
     updatedAt: string;
     createdAt: string;
+}
+
+interface BookListDetails extends Book {
+    isPublished: boolean;
+    stock: number;
     __v: number;
 }
 

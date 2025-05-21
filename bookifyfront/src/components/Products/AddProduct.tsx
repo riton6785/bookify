@@ -59,7 +59,7 @@ const AddProduct = () => {
         }
     }
 
-    const createProduct = async(ispublished: boolean)=> {
+    const createProduct = async(isPublished: boolean)=> {
         setLoading(true)
         if( !name || !author || !price || !pic || !stock || !publisher || !description) {
             toast({
@@ -76,11 +76,11 @@ const AddProduct = () => {
             const config = {
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization: `Bearer ${user.token}`
+                    Authorization: `Bearer ${user?.token}`
                 }
             }
             const { data } = await axios.post("http://localhost:2000/api/book/addbook", {
-                name, price, author, description, stock, publisher, pic, ispublished
+                name, price, author, description, stock, publisher, pic, isPublished, userId: user?._id
             }, config)
             setLoading(false)
         } catch (error) {

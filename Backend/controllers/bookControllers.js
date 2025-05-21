@@ -2,13 +2,13 @@ const asyncHandler = require("express-async-handler");
 const Book = require("../Model/bookModel");
 
 const createBookRecord = asyncHandler(async (req, res)=>{
-    const {name, price, author, description, stock, publisher, pic, isPublished} = req.body;
+    const {name, price, author, description, stock, publisher, pic, isPublished, userId} = req.body;
     const isBookExists = await Book.findOne({name});
     if(isBookExists) {
         throw new Error("Already exists");
         return
     }
-    const book = await Book.create({name, price, author, description, stock, publisher, pic, isPublished});
+    const book = await Book.create({name, price, author, description, stock, publisher, pic, isPublished, createdBy: userId});
     if(book) {
         res.status(200).send({
             _id: book._id,
@@ -20,6 +20,7 @@ const createBookRecord = asyncHandler(async (req, res)=>{
             publisher: publisher,
             pic: pic,
             isPublished: isPublished,
+            createdBy: userId
         })
     }
 
@@ -32,7 +33,7 @@ const getAllBooks = asyncHandler(async(req, res)=>{
 
 const getBooksForHomePage = asyncHandler(async(req
     , res) => {
-    const books = await Book.find({}).limit(12);
+    const books = await Book.find({isPublished: true}, { stock: 0, isPublished: 0, __v: 0 }).limit(12);
     res.send(books)
 })
 

@@ -6,11 +6,17 @@ const UserSchema = mongoose.Schema({
     name: {type: String, required: true},
     email: {type: String, required: true},
     password: { type: String, required: true},
-    role: { type: String, enum: ['user', 'admin'], default: 'user' },
+    role: { type: String, enum: ['user', 'admin', 'seller'], default: 'user' },
     pic: {
         type: String,
         default: "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg",
     },
+    gender: {type: String, enum: ["male", "female", "other", "prefer not say"], default: "prefer not say"},
+    phone: {type: String},
+    completeAddress: {type: String},
+    city: {type: String},
+    state: {type: String},
+    pincode: {type: String},
     wishList: [
         {
             type: mongoose.Schema.Types.ObjectId,

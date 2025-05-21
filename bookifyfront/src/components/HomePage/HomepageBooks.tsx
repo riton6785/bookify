@@ -8,12 +8,12 @@ import { addToCart, toggleWishList } from "../../Redux/cartslice";
 const HomepageBooks = () => {
   const [books, setBooks] = useState<Book[]>();
   const toast = useToast();
-  const user: User | null = useSelector((state: {userReducer: StateType})=> state.userReducer.user);
   const dispatch = useDispatch();
   const fetchBooks = async (): Promise<void> => {
       try {
         const {data} = await axios.get("http://localhost:2000/api/book/getbooksforhomepage")
         const bookData: Book[] = data
+        console.log(bookData)
         setBooks(bookData)
       } catch (error) {
         toast({
