@@ -33,7 +33,7 @@ const getAllBooks = asyncHandler(async(req, res)=>{
 
 const getBooksForHomePage = asyncHandler(async(req
     , res) => {
-    const books = await Book.find({isPublished: true}, { stock: 0, isPublished: 0, __v: 0 }).limit(12);
+    const books = await Book.find({isPublished: true}, { stock: 0, isPublished: 0, __v: 0, updatedAt: 0, createdAt: 0 }).limit(12);
     res.send(books)
 })
 

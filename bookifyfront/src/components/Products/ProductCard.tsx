@@ -161,15 +161,15 @@ const ProductCard = ({book, key}: {book: Book, key: number}) => {
       <Link to={`/book/${book._id}`}>
         <CardBody>
           <Box position="absolute" top={2} right={2} zIndex={1}>
-    <IconButton
-      icon={<FaHeart />}
-      variant="ghost"
-      colorScheme={isAddedToWishList ? "red": "blue"}
-      aria-label="Add to wishlist"
-      size="lg"
-      onClick={(e)=> toggleWishListAction(e)} // define this function
-    />
-  </Box>
+            <IconButton
+              icon={<FaHeart />}
+              variant="ghost"
+              colorScheme={isAddedToWishList ? "red": "blue"}
+              aria-label="Add to wishlist"
+              size="lg"
+              onClick={(e)=> toggleWishListAction(e)} // define this function
+            />
+          </Box>
           <Image
             src={book.pic}
             alt='Green double couch with wooden legs'
@@ -187,7 +187,7 @@ const ProductCard = ({book, key}: {book: Book, key: number}) => {
             <Text color='blue.600' fontSize='2xl'>
               {book.publisher}
             </Text>
-            <Text>
+            <Text noOfLines={2}>
               {book.description}
             </Text>
           </Stack>

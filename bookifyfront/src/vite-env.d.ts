@@ -20,14 +20,14 @@ interface Book {
     description: string;
     publisher: string;
     pic: string;
-    updatedAt: string;
-    createdAt: string;
 }
 
 interface BookListDetails extends Book {
     isPublished: boolean;
     stock: number;
     __v: number;
+    updatedAt: string;
+    createdAt: string;
 }
 
 type CartProduct = {
