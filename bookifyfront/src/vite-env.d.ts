@@ -49,3 +49,18 @@ interface CartState {
     cart: CartData[];
     wishlist: Wishlist[];
 }
+
+type ReviewData = {
+    review: string;
+    rating: number;
+    userId: {
+        _id: string,
+        name: string,
+        pic: string,
+    }
+    bookId: string;
+}
+
+interface ReviewState {
+    reviews: ReviewData[]
+}

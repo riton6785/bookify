@@ -12,43 +12,47 @@ import {
   useToast,
   Badge,
   Textarea,
+  Icon,
 } from "@chakra-ui/react";
-import { FaHeart, FaStar, FaRegStar, FaStarHalfAlt } from "react-icons/fa";
+import { FaHeart, FaStar } from "react-icons/fa";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { addToCart, removeFromCart, toggleWishList } from "../../Redux/cartslice";
+import { addReview } from "../../Redux/review_slice";
+import RenderReviews from "./RenderReviews";
+import StarRendering from "./StarRendering";
 
 
 const ProductDetailsPage = () => {
     const [book, setBook] = useState<Book>()
+    const [description, setDescription] = useState<string>()
+    const [rating, setRating] = useState<number>(0);
     const user: User | null = useSelector((state: {userReducer: StateType})=> state.userReducer.user);
     const params = useParams();
     const dispatch = useDispatch();
     const cartItems = useSelector((state: {cartReducer: CartState})=> state.cartReducer.cart)
     const isAddedToCart: boolean = (Boolean(cartItems.find((item: CartData) => item.product._id === book?._id)));
-    const wishListItems = useSelector((state: {cartReducer: CartState})=> state.cartReducer.wishlist)
+    const wishListItems: Wishlist[] = useSelector((state: {cartReducer: CartState})=> state.cartReducer.wishlist)
     const isAddedToWishList: boolean = Boolean(wishListItems.find((item) => item.id === book?._id));
-
-
-
-
-const fetchBookById = async (id: string) => {
-  try {
-      const { data } = await axios.get("http://localhost:2000/api/book/bookbyid", {
-        params: { id },
-        headers: {
-          Authorization: `Bearer ${user?.token}`
-        }
-      });
-      console.log("details", data)
-      return data;
-    } catch (error) {
-      console.error("Failed to fetch book by ID:", error);
-      throw error;
-  }
-};
+    const allReviews: ReviewData[] = useSelector((state: {reviewReducer: ReviewState}) => state.reviewReducer.reviews)
+    const totalReviews: number = useSelector((state: {reviewReducer: ReviewState})=> state.reviewReducer.reviews.length)
+    const averageReview: number = useSelector((state: {reviewReducer: ReviewState})=> state.reviewReducer.reviews.reduce((sum, curr)=> sum + curr.rating, 0) / totalReviews)
+    const fetchBookById = async (id: string) => {
+      try {
+          const { data } = await axios.get("http://localhost:2000/api/book/bookbyid", {
+            params: { id },
+            headers: {
+              Authorization: `Bearer ${user?.token}`
+            }
+          });
+          return data;
+        } catch (error) {
+          console.error("Failed to fetch book by ID:", error);
+          throw error;
+      }
+    };
 
 
     useEffect(() => {
@@ -162,16 +166,6 @@ const fetchBookById = async (id: string) => {
     
   }
 
-  const handleWishlist = () => {
-    toast({
-      title: "Added to wishlist",
-      status: "success",
-      position: "top",
-      duration: 3000,
-      isClosable: true,
-    });
-  };
-
   const handleBuyNow = () => {
     toast({
       title: "Proceeding to checkout",
@@ -222,23 +216,69 @@ const fetchBookById = async (id: string) => {
     }
   }
 
-  const renderStars = (rating: number) => {
-    const stars = [];
-    for (let i = 1; i <= 5; i++) {
-      if (rating >= i) {
-        stars.push(<FaStar color="gold" key={i} />);
-      } else if (rating > i - 1 && rating < i) {
-        stars.push(<FaStarHalfAlt color="gold" key={i} />);
-      } else {
-        stars.push(<FaRegStar color="gold" key={i} />);
+  const submitReview = async(): Promise<void>=> {
+    if(!user || !book) {
+      toast({
+        title: "Something went wrong",
+        status: "error",
+        isClosable: true,
+        position: "bottom",
+        duration: 5000,
+      })
+    } else {
+      try {
+        const config = {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${user?.token}`          }
+          }
+          
+          const {data} = await axios.post("http://localhost:2000/api/review/postreview", {review: description, bookId: book._id, rating}, config);
+          dispatch(addReview([data]))
+          setDescription("")
+        toast({
+          title: "Review posted succesfully",
+          status: "success",
+          position: "top",
+          isClosable: true,
+          duration: 5000,
+        })
+      } catch (error) {
+        toast({
+          title: "Error occured while posting the review",
+          status: "error",
+          isClosable: true,
+          position: "bottom",
+          duration: 5000,
+          description: error.response.data.message
+        }) 
       }
     }
-    return <HStack>{stars}</HStack>;
-  };
-
-  const submitReview = ()=> {
-    
   }
+
+  const fetchReviews = async(id: string): Promise<void> => {
+    if (!user) {
+      toast({
+        title: "NO user or book found",
+        status: "error",
+        isClosable: true,
+        position: "bottom",
+        duration: 5000,
+      })
+    } else {
+       const { data } = await axios.get("http://localhost:2000/api/review/getreviewofbook", {
+            params: { bookId: id },
+            headers: {
+              Authorization: `Bearer ${user?.token}`
+            }
+          });
+          dispatch(addReview(data.reviews))
+    }
+  }
+
+  useEffect(()=> {
+    fetchReviews(params.id);
+  }, [])
 
   return (
     <>{
@@ -273,9 +313,9 @@ const fetchBookById = async (id: string) => {
 
           {/* Static Rating & Reviews */}
           <Box>
-            {renderStars(4.2)}
+            <StarRendering rating={averageReview}/>
             <Text fontSize="sm" color="gray.500">
-              13 customer reviews
+              {totalReviews} customer reviews
             </Text>
           </Box>
 
@@ -300,17 +340,31 @@ const fetchBookById = async (id: string) => {
       <Divider my={10} />
 
       {/* Static Reviews Placeholder */}
-      <Stack direction={{base: "column", md: "row"}} mt={6} gap={10}>
-        <Box flex={'1 1 60%'}>
+      <Box display={"flex"} flexWrap={"wrap"} mt={6} gap={10}>
+        <Box flex={'1 1 30%'} position={"sticky"} top={"50px"}>
           <Heading size="md" mb={4}>
             Add your Reviews
           </Heading>
           <VStack spacing={4} align="stretch">
+            <HStack>
+              {[1, 2, 3, 4, 5].map((star) => (
+                <Icon
+                  key={star}
+                  as={FaStar}
+                  boxSize={6}
+                  cursor="pointer"
+                  color={star <= rating ? "yellow.400" : "gray.300"}
+                  onClick={() => setRating(star)}
+                />
+              ))}
+            </HStack>
             <Textarea
+              value={description}
               border="3px solid #eee"
               borderRadius="md"
               padding="20px"
               boxShadow="md"
+              onChange={(e)=> setDescription(e.target.value)}
             />
             <Button colorScheme="blue" variant="solid" onClick={submitReview}>
               Submit Review
@@ -321,15 +375,16 @@ const fetchBookById = async (id: string) => {
           <Heading size="md" mb={4}>
             Customer Reviews
           </Heading>
-          <Text color="gray.500">
-            ★★★★★ "Great book, loved the writing style and flow!"
-          </Text>
-          <Text color="gray.500">
-            ★★★★☆ "Informative and well-structured. A must-read."
-          </Text>
+          <VStack align={"stretch"} overflowY={"auto"} maxH={"80vh"}>
+              {
+              allReviews.length > 0 ? allReviews.map((review)=> (
+                <RenderReviews review={review}/>
+              )): <Text>No reviews available</Text>
+            }
+          </VStack>
         </Box>
 
-      </Stack>
+      </Box>
     </Box>)
     :<Box>Loading</Box>
     }
