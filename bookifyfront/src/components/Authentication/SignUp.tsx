@@ -11,6 +11,7 @@ const SIgnup = ({onClose}: {onClose: () => void;}) => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [confirmpassword, setConfirmpassword] = useState<string>("");
+  const [otp, setOtp] = useState<string>(0);
   const handleClick = () => setShow(!show);
   const toast = useToast();
   const dispatch = useDispatch();
@@ -59,7 +60,7 @@ const SIgnup = ({onClose}: {onClose: () => void;}) => {
 
   const submitHandler = async()=> {
       setLoading(true)
-      if( !name || !email || !password || !confirmpassword || !profilePic) {
+      if( !name || !email || !password || !confirmpassword || !profilePic || !otp) {
         toast({
           title: "please fill all the fields",
           status: "warning",
@@ -81,7 +82,7 @@ const SIgnup = ({onClose}: {onClose: () => void;}) => {
       }
      try {
       const response = await axios.post("http://localhost:2000/api/user/register", {
-        name, email, password, profilePic,
+        name, email, password, profilePic, otp,
       });
       toast({
         title: "Account created succesfully",
@@ -106,6 +107,35 @@ const SIgnup = ({onClose}: {onClose: () => void;}) => {
   
      }
     }
+
+  const generateOtp = async()=> {
+    try {
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+      const {data} = await axios.post(
+        "http://localhost:2000/api/otp/sendotp",
+        {
+          email: email,
+        },
+        config
+      );
+      console.log("Dataaaaaaaaaaaaaa", data);
+      
+    } catch (error) {
+      toast({
+        title: "error occured",
+        description: error.response.data.message,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: 'bottom'
+      })
+      
+    }
+  }
   return (
     <VStack spacing="5px">
       <FormControl id="first-name" isRequired>
@@ -114,7 +144,19 @@ const SIgnup = ({onClose}: {onClose: () => void;}) => {
       </FormControl>
       <FormControl id="email" isRequired>
         <FormLabel>Email</FormLabel>
-        <Input placeholder='Enter your Email' onChange={(e)=> setEmail(e.target.value)}/>
+        <InputGroup>
+          <Input placeholder='Enter your Email' onChange={(e)=> setEmail(e.target.value)}/>
+          <InputRightElement width="4rem">
+            <Button height='100%'
+            onClick={generateOtp}>
+              Get OTP
+            </Button>
+          </InputRightElement>
+        </InputGroup>
+      </FormControl>
+      <FormControl id="otp" isRequired>
+        <FormLabel>OTP</FormLabel>
+        <Input placeholder='Enter your otp' onChange={(e)=> setOtp(e.target.value)}/>
       </FormControl>
       <FormControl id="password" isRequired>
         <FormLabel>Password</FormLabel>

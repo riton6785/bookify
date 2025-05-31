@@ -1,9 +1,10 @@
 const asyncHandler = require("express-async-handler");
 const User = require("../Model/usermodel");
+const OTP = require("../Model/otp_model")
 const generateToken = require("../Config/generateToken");
 
 const registerUser = asyncHandler(async (req, res)=> {
-    const {name, email, password, pic} = req.body;
+    const {name, email, password, pic, otp} = req.body;
 
     if( !name || !email || !password) {
         res.status(400);
@@ -15,6 +16,15 @@ const registerUser = asyncHandler(async (req, res)=> {
     if( userExists ) {
         res.status(200);
         throw new Error("User already Exists")
+    }
+
+    // Find the most recent OTP for the email
+    const response = await OTP.find({ email }).sort({ createdAt: -1 }).limit(1);
+    if (response.length === 0 || otp !== response[0].otp) {
+      return res.status(400).json({
+        success: false,
+        message: 'The OTP is not valid',
+      });
     }
 
     const user = await User.create({name, email, password, pic});

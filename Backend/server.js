@@ -8,6 +8,7 @@ const userRoutes = require('./routes/userRoutes')
 const bookRoutes = require('./routes/bookRoutes')
 const cartRoutes = require('./routes/cart_routes');
 const reviewRoutes = require('./routes/review_routes')
+const otpRoutes = require('./routes/otp_routes');
 
 dotenv.config()
 connectDB()
@@ -19,6 +20,7 @@ app.use("/api/user", userRoutes);
 app.use("/api/book", bookRoutes);
 app.use("/api/cart", cartRoutes);
 app.use("/api/review", reviewRoutes);
+app.use("/api/otp", otpRoutes);
 app.get("/",(req,res)=>{
     res.send("<h1>welcome here</h1>")
 })

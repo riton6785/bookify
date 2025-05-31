@@ -1,7 +1,7 @@
 import { Box, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, Button, ModalFooter, Tabs, TabList, Tab, TabPanels, TabPanel, useDisclosure } from '@chakra-ui/react'
 import React from 'react'
 import Login from '../Authentication/Login'
-import SIgnup from '../Authentication/SIgnup'
+import SIgnup from '../Authentication/SignUp'
 
 const AuthenticationModel = () => {
     const { isOpen, onOpen, onClose} = useDisclosure()
