@@ -13,6 +13,12 @@ const bookSchema = mongoose.Schema({
         type: String,
         default: "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg",
     },
+    genres_ids: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "genres",
+        }
+    ],
     createdBy: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "user",

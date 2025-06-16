@@ -1,9 +1,15 @@
-import { Box, Button, HStack, Text, FormControl, Input, VStack, FormLabel, Textarea, useToast} from '@chakra-ui/react'
+import { Box, Button, HStack, Text, FormControl, Input, VStack, FormLabel, Textarea, useToast, useDisclosure, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter} from '@chakra-ui/react'
+import Select from "react-dropdown-select";
 import axios from 'axios';
 import React, { useEffect } from 'react'
 import { useState } from 'react'
 import { useSelector } from 'react-redux';
+import { label } from 'framer-motion/client';
 
+interface GenresForOption {
+    value: string,
+    label: string,
+}
 const AddProduct = () => {
     const [name, setName] = useState<string>("");
     const [author, setAuthor] = useState<string>("");
@@ -13,9 +19,17 @@ const AddProduct = () => {
     const [stock, setStock] = useState<number>(0);
     const [loading, setLoading] = useState<boolean>(false);
     const [publisher, setPublisher] = useState<string>();
+    const [genres, setGenres] = useState<string>();
     const toast = useToast();
+    const { isOpen, onOpen, onClose } = useDisclosure();
+    const [fetchedGenres, setFetchedGenres] = useState<GenresBasics[]>();
+    const [genreForBook, setGenreForBook] = useState<GenresForOption[] | undefined>();
     const user: User | null = useSelector((state: {userReducer: StateType})=> state.userReducer.user)
-
+    
+    const options: GenresForOption[] | undefined = fetchedGenres?.map(genre=> ({
+        value: genre._id,
+        label: genre.name
+    }))
     const handleImage = (pic: File)=> {
         setLoading(true);
         if ( pic === undefined) {
@@ -79,8 +93,9 @@ const AddProduct = () => {
                     Authorization: `Bearer ${user?.token}`
                 }
             }
+            const genres_ids = genreForBook?.map(genres => genres.value)
             const { data } = await axios.post("http://localhost:2000/api/book/addbook", {
-                name, price, author, description, stock, publisher, pic, isPublished, userId: user?._id
+                name, price, author, description, stock, publisher, pic, isPublished, userId: user?._id, genres_ids
             }, config)
             setLoading(false)
         } catch (error) {
@@ -95,6 +110,52 @@ const AddProduct = () => {
         }
     }
 
+    const createGenres = async()=> {
+        console.log(genres)
+        const config = {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${user?.token}`
+            }
+        }
+        try {
+            const {data} = await axios.post("http://localhost:2000/api/genres/creategenre", {name: genres}, config)
+            console.log(data);
+        } catch (error) {
+            toast({
+                title: error.response.data,
+                status: "error",
+                duration: 5000,
+                isClosable: true,
+                position: 'bottom'
+            })
+        }
+        onClose()
+    }
+
+    const fetchGenresHandler = async()=> {
+        const config = {
+            headers: {
+                Authorization: `Bearer ${user?.token}`
+            }
+        }
+        try {
+            const {data} = await axios.get("http://localhost:2000/api/genres/getallgenres", config)
+            setFetchedGenres(data);
+        } catch (error) {
+            toast({
+                title: error.response.data,
+                status: "error",
+                duration: 5000,
+                isClosable: true,
+                position: 'bottom'
+            })
+        }
+    }
+    useEffect(()=> {
+        fetchGenresHandler();
+    }, [])
+
   return (
     <>
         <Box borderBottomColor='gray.300' borderBottomWidth={2} m={7}>
@@ -103,6 +164,27 @@ const AddProduct = () => {
                     Add Product
                 </Text>
                 <HStack>
+                    <Button colorScheme='teal' borderRadius="20px" onClick={onOpen}>CreateGenres</Button>
+                    <Modal isOpen={isOpen} onClose={onClose}>
+                        <ModalOverlay />
+                        <ModalContent>
+                        <ModalHeader>Create genres</ModalHeader>
+                        <ModalCloseButton />
+                        <ModalBody>
+                            <FormControl id='book-genre'>
+                                <FormLabel>Genres</FormLabel>
+                                <Input placeholder='Enter the Genres' variant="filled" onChange={(e)=> setGenres(e.target.value)}/>
+                            </FormControl>
+                        </ModalBody>
+
+                        <ModalFooter>
+                            <Button colorScheme='gray' borderRadius="20px" mr={3} onClick={onClose}>
+                                Close
+                            </Button>
+                            <Button colorScheme='teal' borderRadius="20px" onClick={createGenres}>Create</Button>
+                        </ModalFooter>
+                        </ModalContent>
+                    </Modal>
                     <Button colorScheme='gray' borderRadius="20px" onClick={()=> createProduct(false)} isLoading={loading}>Save to draft</Button>
                     <Button colorScheme='teal' borderRadius="20px" onClick={()=> createProduct(true)}>Publish</Button>
                 </HStack>
@@ -142,6 +224,10 @@ const AddProduct = () => {
                     <FormControl id='book-description'>
                         <FormLabel>Description</FormLabel>
                         <Textarea placeholder='Enter the description' variant="filled" onChange={(e)=> setDescription(e.target.value)}/>
+                    </FormControl>
+                    <FormControl id='book-genres'>
+                        <FormLabel>Genres</FormLabel>
+                        <Select options={options} onChange={(values) => setGenreForBook(values)} multi={true}/>;
                     </FormControl>
                 </VStack>
             </Box>

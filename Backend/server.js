@@ -10,6 +10,7 @@ const cartRoutes = require('./routes/cart_routes');
 const reviewRoutes = require('./routes/review_routes')
 const otpRoutes = require('./routes/otp_routes');
 const paymentRoutes = require('./routes/razorpay_route');
+const genresRoutes = require('./routes/genres_route')
 
 dotenv.config()
 connectDB()
@@ -24,6 +25,7 @@ app.use("/api/cart", cartRoutes);
 app.use("/api/review", reviewRoutes);
 app.use("/api/otp", otpRoutes);
 app.use("/api/payment", paymentRoutes);
+app.use('/api/genres', genresRoutes);
 
 app.get("/",(req,res)=>{
     res.send("<h1>welcome here</h1>")

@@ -64,3 +64,8 @@ type ReviewData = {
 interface ReviewState {
     reviews: ReviewData[]
 }
+
+interface GenresBasics {
+    name: string,
+    _id: string,
+}
