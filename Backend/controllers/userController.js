@@ -94,7 +94,7 @@ const createUser = asyncHandler(async(req, res)=> {
 })
 
 const getAllUsers = asyncHandler(async(req, res) => {
-    const allUsers = await User.find({});
+    const allUsers = await User.find({}).select("-password");
     res.send(allUsers)
 })
 

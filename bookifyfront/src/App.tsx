@@ -9,6 +9,7 @@ import GetAllBooks from './components/Products/GetAllBooks'
 import Cart from './components/Cart/Cart'
 import ProductDetailsPage from './components/Products/ProductDetailsPage'
 import NotFound from './components/Miscellanious/NotFound'
+import GetAllUSers from './components/User/GetAllUSers'
 
 const App = () => {
   return (
@@ -20,6 +21,7 @@ const App = () => {
         <Route path="/dashboard" element={<AdminDashboard/>}/>
         <Route path="/dashboard/addproducts" element={<AddProduct/>}/>
         <Route path="/dashboard/allproducts" element={<GetAllBooks/>}/>
+        <Route path="/dashboard/alluser" element={<GetAllUSers/>}/>
         <Route path="/mycart" element={<Cart/>}/>
         <Route path="book/:id" element={<ProductDetailsPage/>}/>
         <Route path="*" element={<NotFound/>}/>

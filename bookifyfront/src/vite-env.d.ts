@@ -20,6 +20,7 @@ interface Book {
     description: string;
     publisher: string;
     pic: string;
+    genres_id: [];
 }
 
 interface BookListDetails extends Book {
