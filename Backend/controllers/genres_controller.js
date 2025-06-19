@@ -35,7 +35,6 @@ const getAllGenres = asynchHandler(async (req, res)=> {
 })
 
 const setBooksintotheGenres = asynchHandler(async(genres_id, book_id) => {
-    console.log(genres_id, book_id)
     genres_id.forEach(async(genre_id)=> {
         await Genres.findByIdAndUpdate(genre_id, { $addToSet: { book_ids: book_id } }, { new: true })
     })

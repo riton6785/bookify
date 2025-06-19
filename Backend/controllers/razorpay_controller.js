@@ -2,12 +2,16 @@ const asyncHandler = require(   "express-async-handler");
 const razorpayInstance = require("../Config/razorpay_instance");
 const crypto = require("crypto");
 const Cart = require("../Model/cart_model");
+const { createSoldProduct } = require("./sold_product_controller");
 
 const processPayment = asyncHandler(async (req, res) => {
-    const { amount } = req.body;
+    const { amount, productAndQuantities } = req.body;
     const options = {
         amount: amount * 100,
         currency: "INR",
+        notes: {
+            productAndQuantities
+        }
     };
     const orders = await razorpayInstance.orders.create(options);
     res.status(200).json({
@@ -30,6 +34,8 @@ const paymentVerification = asyncHandler(async (req, res) => {
         .update(body.toString())
         .digest("hex");
     if (expectedSignature === razorpay_signature) {
+        const order = await razorpayInstance.orders.fetch(razorpay_order_id);
+        createSoldProduct(order.notes.productAndQuantities, order.amount/100, req.query.userId);
         await Cart.deleteOne({user: req.query.userId});
         return res.redirect(`http://localhost:5173/payment_success?reference=${razorpay_payment_id}`);
     } else {
