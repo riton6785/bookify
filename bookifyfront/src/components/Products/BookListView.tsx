@@ -1,8 +1,15 @@
 import React from "react";
 import { Tr, Td, Stack, IconButton, Image } from "@chakra-ui/react";
 import { FaEdit, FaTrash } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 const BookListView = ({ book }: { book: BookListDetails }) => {
+
+  const navigate = useNavigate()
+  const editProductHandler = (()=> {
+    navigate(`/editproduct/${book._id}`)
+    console.log(book)
+  })
   return (
     <Tr key={book._id}>
       <Td>
@@ -25,6 +32,7 @@ const BookListView = ({ book }: { book: BookListDetails }) => {
             icon={<FaEdit />}
             colorScheme="blue"
             size="sm"
+            onClick={editProductHandler}
           />
           <IconButton
             aria-label="Delete"

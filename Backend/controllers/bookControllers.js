@@ -29,7 +29,7 @@ const createBookRecord = asyncHandler(async (req, res)=>{
 })
 
 const getAllBooks = asyncHandler(async(req, res)=>{
-    const allBooks = await Book.find({});
+    const allBooks = await Book.find({}).populate('genres_ids', 'name');
     res.send(allBooks)
 })
 
@@ -40,7 +40,12 @@ const getBooksForHomePage = asyncHandler(async(req
 })
 
 const bookById = asyncHandler(async(req, res) => {
-    const book = await Book.findById(req.query.id)
+    const book = await Book.findById(req.query.id).populate('genres_ids', 'name');
     res.send(book)
 })
-module.exports = {createBookRecord, getAllBooks, bookById, getBooksForHomePage}
+
+const updateBookRecord = asyncHandler(async(req, res)=> {
+    const {changedFields} = req.body;
+    const book = await Book.findByIdAndUpdate(req.params.id, changedFields);
+})
+module.exports = {createBookRecord, getAllBooks, bookById, getBooksForHomePage, updateBookRecord}

@@ -10,6 +10,7 @@ import ProductDetailsPage from './components/Products/ProductDetailsPage'
 import NotFound from './components/Miscellanious/NotFound'
 import GetAllUSers from './components/User/GetAllUSers'
 import Dashboard from './components/AdminDashboard/Dashboard'
+import EditProducts from './components/Products/EditProducts'
 
 const App = () => {
   return (
@@ -20,6 +21,7 @@ const App = () => {
         <Route path="/" element={<HomePage/>}/>
         <Route path="/dashboard" element={<Dashboard/>}/>
         <Route path="/dashboard/addproducts" element={<AddProduct/>}/>
+        <Route path="/editproduct/:id" element={<EditProducts/>}/>
         <Route path="/dashboard/allproducts" element={<GetAllBooks/>}/>
         <Route path="/dashboard/alluser" element={<GetAllUSers/>}/>
         <Route path="/mycart" element={<Cart/>}/>
