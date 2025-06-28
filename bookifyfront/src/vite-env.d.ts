@@ -6,6 +6,7 @@ interface User {
     name: string;
     pic: string;
     token: string;
+    role: string;
 }
 
 interface StateType {

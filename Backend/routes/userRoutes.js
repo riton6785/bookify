@@ -7,7 +7,7 @@ const router = express.Router()
 router.post('/register', registerUser)
 router.post('/login', loginUser)
 router.post('/createuser', adminProtected, createUser);
-router.get('/getallusers', protected, getAllUsers);
+router.get('/getallusers', adminProtected, getAllUsers);
 router.post('/toggewishlist', protected, toggleWishList);
 router.get('/getwishlist', protected, getWishList);
     

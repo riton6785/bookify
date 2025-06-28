@@ -1,10 +1,10 @@
 const express = require("express");
 const { createGenres, getAllGenres } = require("../controllers/genres_controller");
-const {protected} = require("../Middlewares/authMiddlewares")
+const {protected, adminProtected} = require("../Middlewares/authMiddlewares")
 
 const router = express.Router();
 
-router.post("/creategenre", protected, createGenres);
-router.get("/getallgenres", protected, getAllGenres);
+router.post("/creategenre", adminProtected, createGenres);
+router.get("/getallgenres", adminProtected, getAllGenres);
 
 module.exports = router;

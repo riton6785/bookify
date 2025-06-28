@@ -5,10 +5,10 @@ const { adminProtected, protected } = require("../Middlewares/authMiddlewares");
 
 const router = express.Router();
 
-router.post("/addbook", createBookRecord);
+router.post("/addbook", adminProtected, createBookRecord);
 router.get("/getallbooks", protected, getAllBooks);
 router.get("/bookbyid", protected, bookById);
 router.get("/getbooksforhomepage", getBooksForHomePage);
-router.put("/updatebook/:id", protected, updateBookRecord);
+router.put("/updatebook/:id", adminProtected, updateBookRecord);
 
 module.exports = router;

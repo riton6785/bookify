@@ -1,46 +1,72 @@
-import { Box, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, Button, ModalFooter, Tabs, TabList, Tab, TabPanels, TabPanel, useDisclosure } from '@chakra-ui/react'
-import React from 'react'
-import Login from '../Authentication/Login'
-import SIgnup from '../Authentication/SignUp'
+import {
+  Box,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
+  Button,
+  useDisclosure,
+  HStack,
+} from '@chakra-ui/react';
+import { useState } from 'react';
+import Login from '../Authentication/Login';
+import SIgnup from '../Authentication/SignUp';
 
 const AuthenticationModel = () => {
-    const { isOpen, onOpen, onClose} = useDisclosure()
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [authType, setAuthType] = useState<'login' | 'signup' | ''>('');
+
+  const setAuthTypeHandler = (auth: 'login' | 'signup') => {
+    setAuthType(auth);
+    onOpen();
+  };
+
+  const renderAuthContent = () => {
+    if (authType === 'login') return <Login onClose={onClose} />;
+    return <SIgnup onClose={onClose} />;
+  };
+
   return (
     <>
-        <Button colorScheme='teal' variant='ghost' mr={3} onClick={onOpen}>Login/signup</Button>
-        <Modal isOpen={isOpen} onClose={onClose} size="xl">
+      <HStack spacing={4} justify="center" my={4}>
+        <Button
+          onClick={() => setAuthTypeHandler('login')}
+          colorScheme="teal"
+          variant="solid"
+          px={6}
+          py={2}
+        >
+          Login
+        </Button>
+        <Button
+          onClick={() => setAuthTypeHandler('signup')}
+          colorScheme="blue"
+          variant="outline"
+          px={6}
+          py={2}
+        >
+          Signup
+        </Button>
+      </HStack>
+
+      <Modal isOpen={isOpen} onClose={onClose} size="xl" isCentered>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Modal Title</ModalHeader>
+          <ModalHeader textAlign="center">
+            {authType === 'login' ? 'Login to Your Account' : 'Create a New Account'}
+          </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-          <Box bg="white" w="100%" p={4}>
-                <Tabs variant="soft-rounded">
-                    <TabList mb="1em">
-                        <Tab w="50%">Login</Tab>
-                        <Tab w="50%">Signup</Tab>
-                    </TabList>
-                    <TabPanels>
-                        <TabPanel>
-                            <Login onClose={onClose}/>
-                        </TabPanel>
-                        <TabPanel>
-                           <SIgnup onClose={onClose}/>
-                        </TabPanel>
-                    </TabPanels>
-                </Tabs>
-          </Box>
+            <Box bg="white" w="100%" p={4}>
+              {renderAuthContent()}
+            </Box>
           </ModalBody>
-          {/* <ModalFooter>
-            <Button colorScheme='blue' mr={3} onClick={onClose}>
-              Close
-            </Button>
-            <Button variant='ghost'>Secondary Action</Button>
-          </ModalFooter> */}
         </ModalContent>
       </Modal>
     </>
-  )
-}
+  );
+};
 
-export default AuthenticationModel
+export default AuthenticationModel;

@@ -5,18 +5,20 @@ import { Box, Button, Menu,
     MenuDivider,
     Icon,
     Text,
-    useToast
+    useToast,
+    useBreakpointValue
    } from '@chakra-ui/react';
 import { ChevronDownIcon } from "@chakra-ui/icons"
 import SideDrawer from './SideDrawer';
 import { useDispatch, useSelector } from 'react-redux';
 import { logoutUser } from '../../Redux/slice';
 import Profile from './Profile';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FaCartArrowDown } from "react-icons/fa";
 import { useEffect, useState } from 'react';
 import { addToCart, toggleWishList } from '../../Redux/cartslice';
 import axios from 'axios';
+import AuthenticationModel from './AuthenticationModel';
 
 const TopBar = () => {
 
@@ -25,6 +27,8 @@ const TopBar = () => {
     const [cartCount, setCartCount] = useState<number>(0)
     const cartItems = useSelector((state: {cartReducer: CartState}) => state.cartReducer.cart)
     const user: User | null = useSelector((state: {userReducer: StateType})=> state.userReducer.user);
+    const navigate = useNavigate();
+    const showBox = useBreakpointValue({base: false, lg: true})
     
 
     const getCartCount = () => {
@@ -109,6 +113,10 @@ const TopBar = () => {
             position: 'bottom'
         })
     }
+
+    const goToDashboard = ()=> {
+      navigate("/dashboard")
+    }
   return (
     <>
     <Box
@@ -120,17 +128,35 @@ const TopBar = () => {
         px="10px"
         py="5px"
         >
-        <SideDrawer />
-        <Box color="white" fontSize={20} fontWeight={500} margin={2}>
-            <Link to="/">Bookify</Link>
+        <Box flex="1">
+          <SideDrawer />
         </Box>
+
+          {/* Center Section */}
+          <Box flex="1" textAlign="center" color="white" fontSize={20} fontWeight={500}>
+            <Link to="/">Bookify</Link>
+          </Box>
         <Box
             display="flex"
             alignItems="center"
+            justifyContent="right"
             bg="black"
             px="10px"
             py="5px"
+            flex="1"
         >
+          <>
+            {showBox && (
+              <Box>
+                {!user && <AuthenticationModel />}
+                {user?.role === 'admin' && (
+                  <Button variant="solid" colorScheme="teal" onClick={goToDashboard}>
+                    Dashboard
+                  </Button>
+                )}
+              </Box>
+            )}
+          </>
             <Link to="/mycart">
                 <Box position="relative" background="white" mx={5} p={1}>
                 <FaCartArrowDown size={24}/>

@@ -11,22 +11,53 @@ import NotFound from './components/Miscellanious/NotFound'
 import GetAllUSers from './components/User/GetAllUSers'
 import Dashboard from './components/AdminDashboard/Dashboard'
 import EditProducts from './components/Products/EditProducts'
+import AdminProtectedValidator from './components/AdminDashboard/AdminProtectedValidator'
+import Unauthorized from './components/Miscellanious/Unauthorized'
 
 const App = () => {
   return (
     <BrowserRouter>
         <TopBar/>
       <Routes>
-        <Route/>
         <Route path="/" element={<HomePage/>}/>
-        <Route path="/dashboard" element={<Dashboard/>}/>
-        <Route path="/dashboard/addproducts" element={<AddProduct/>}/>
-        <Route path="/editproduct/:id" element={<EditProducts/>}/>
-        <Route path="/dashboard/allproducts" element={<GetAllBooks/>}/>
-        <Route path="/dashboard/alluser" element={<GetAllUSers/>}/>
+        {/* Protected dashboard section */}
+        <Route
+      path="/dashboard"
+      element={
+        <AdminProtectedValidator allowedRoles={['admin']}>
+          <Dashboard />
+        </AdminProtectedValidator>
+      }
+    />
+      <Route path="/dashboard/addproducts" element = {
+        <AdminProtectedValidator allowedRoles={['admin']}>
+          <AddProduct/>
+        </AdminProtectedValidator>
+      }/>
+      <Route path="/editproduct/:id" element = {
+        <AdminProtectedValidator allowedRoles={['admin']}>
+          <EditProducts/>
+        </AdminProtectedValidator>
+      }/>
+      <Route path="/editproduct/:id" element = {
+        <AdminProtectedValidator allowedRoles={['admin']}>
+          <EditProducts/>
+        </AdminProtectedValidator>
+      }/>
+      <Route path="/dashboard/allproducts" element = {
+        <AdminProtectedValidator allowedRoles={['admin']}>
+          <GetAllBooks/>
+        </AdminProtectedValidator>
+      }/>
+      <Route path="/dashboard/alluser" element = {
+        <AdminProtectedValidator allowedRoles={['admin']}>
+          <GetAllUSers/>
+        </AdminProtectedValidator>
+      }/>
         <Route path="/mycart" element={<Cart/>}/>
         <Route path="book/:id" element={<ProductDetailsPage/>}/>
         <Route path="*" element={<NotFound/>}/>
+        <Route path="/unauthorized" element={<Unauthorized/>}/>
       </Routes>
     </BrowserRouter>
   )

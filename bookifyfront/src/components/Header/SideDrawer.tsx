@@ -10,6 +10,7 @@ import {
     DrawerContent,
     DrawerCloseButton,
     useDisclosure,
+    useBreakpointValue,
   } from '@chakra-ui/react'
 import { HamburgerIcon } from '@chakra-ui/icons'
 import { useNavigate } from 'react-router-dom'
@@ -23,12 +24,13 @@ const SideDrawer = () => {
             navigate("/dashboard")
             onClose()
     }
+    const showDrawer = useBreakpointValue({base: true, lg: false})
   return (
     <>
-        <Button colorScheme='white' onClick={onOpen} >
+        {showDrawer && <Button colorScheme='white' onClick={onOpen} >
             <HamburgerIcon boxSize={8}/>
             {/* Open */}
-        </Button>
+        </Button>}
         <Drawer
             isOpen={isOpen}
             placement='left'
