@@ -1,9 +1,9 @@
 const asyncHandler = require("express-async-handler");
-const SoldProducts = require("../Model/sold_products");
+const SaleOrder = require("../Model/sale_order");
 const Book = require("../Model/bookModel");
 
-const createSoldProduct = asyncHandler((async(productAndQuantities, totalAmount, userId)=> {
-    await SoldProducts.create({
+const createSaleOrder = asyncHandler((async(productAndQuantities, totalAmount, userId)=> {
+    await SaleOrder.create({
         userId,
         productwithquantity: productAndQuantities,
         totalAmount,
@@ -17,4 +17,4 @@ const createSoldProduct = asyncHandler((async(productAndQuantities, totalAmount,
     }
 }))
 
-module.exports = {createSoldProduct};
+module.exports = {createSaleOrder};

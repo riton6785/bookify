@@ -6,5 +6,5 @@ const router = express.Router();
 
 router.post("/process/payment", protected, processPayment);
 router.get("/razorpaykey",protected, getRazorpayKey);
-router.post("/payment_verification", protected, paymentVerification);
+router.post("/payment_verification", paymentVerification);
 module.exports = router;

@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const SoldProductsSchema = mongoose.Schema({
+const SaleOrderSchema = mongoose.Schema({
     userId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "user"
@@ -19,6 +19,6 @@ const SoldProductsSchema = mongoose.Schema({
     date: {type: String},
 })
 
-const SoldProducts = mongoose.model('sold_product', SoldProductsSchema);
+const SaleOrder = mongoose.model('sale_order', SaleOrderSchema);
 
-module.exports = SoldProducts;
+module.exports = SaleOrder;
