@@ -17,6 +17,8 @@ const SaleOrderSchema = mongoose.Schema({
     ],
     totalAmount: {type: Number},
     date: {type: String},
+}, {
+    timestamps: true,
 })
 
 const SaleOrder = mongoose.model('sale_order', SaleOrderSchema);

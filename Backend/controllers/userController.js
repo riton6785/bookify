@@ -126,4 +126,9 @@ const getWishList = asyncHandler(async(req, res) => {
         return res.status(200).json({wishListItems});
     }
 })
-module.exports = {registerUser, loginUser, createUser, getAllUsers, toggleWishList, getWishList}
+
+const getUsersCount = asyncHandler(async(req, res)=> {
+    const data = await User.countDocuments();
+    res.send(data);
+})
+module.exports = {registerUser, loginUser, createUser, getAllUsers, toggleWishList, getWishList, getUsersCount}

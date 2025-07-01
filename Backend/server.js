@@ -11,6 +11,7 @@ const reviewRoutes = require('./routes/review_routes')
 const otpRoutes = require('./routes/otp_routes');
 const paymentRoutes = require('./routes/razorpay_route');
 const genresRoutes = require('./routes/genres_route')
+const chartRoutes = require('./routes/prepare_chart_data_routes');
 
 dotenv.config()
 connectDB()
@@ -26,6 +27,7 @@ app.use("/api/review", reviewRoutes);
 app.use("/api/otp", otpRoutes);
 app.use("/api/payment", paymentRoutes);
 app.use('/api/genres', genresRoutes);
+app.use('/api/charts', chartRoutes);
 
 app.get("/",(req,res)=>{
     res.send("<h1>welcome here</h1>")

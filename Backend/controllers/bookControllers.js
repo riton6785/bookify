@@ -48,4 +48,10 @@ const updateBookRecord = asyncHandler(async(req, res)=> {
     const {changedFields} = req.body;
     const book = await Book.findByIdAndUpdate(req.params.id, changedFields);
 })
-module.exports = {createBookRecord, getAllBooks, bookById, getBooksForHomePage, updateBookRecord}
+
+const getProductsCount = asyncHandler(async(req, res)=> {
+    const data = await Book.countDocuments();
+    res.send(data);
+})
+
+module.exports = {createBookRecord, getAllBooks, bookById, getBooksForHomePage, updateBookRecord, getProductsCount}

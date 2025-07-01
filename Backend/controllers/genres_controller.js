@@ -40,4 +40,9 @@ const setBooksintotheGenres = asynchHandler(async(genres_id, book_id) => {
     })
 })
 
-module.exports= {createGenres, getAllGenres, setBooksintotheGenres};
+const getGenresCount = asynchHandler(async(req, res)=> {
+    const data = await Genres.countDocuments();
+    res.send(data);
+})
+
+module.exports= {createGenres, getAllGenres, setBooksintotheGenres, getGenresCount};
