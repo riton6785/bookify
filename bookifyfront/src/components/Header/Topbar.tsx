@@ -6,7 +6,10 @@ import { Box, Button, Menu,
     Icon,
     Text,
     useToast,
-    useBreakpointValue
+    useBreakpointValue,
+    InputGroup,
+    Input,
+    InputRightElement
    } from '@chakra-ui/react';
 import { ChevronDownIcon } from "@chakra-ui/icons"
 import SideDrawer from './SideDrawer';
@@ -19,16 +22,19 @@ import { useEffect, useState } from 'react';
 import { addToCart, toggleWishList } from '../../Redux/cartslice';
 import axios from 'axios';
 import AuthenticationModel from './AuthenticationModel';
+import { FaSearch } from "react-icons/fa";
 
 const TopBar = () => {
 
     const dispatch = useDispatch();
     const toast = useToast();
-    const [cartCount, setCartCount] = useState<number>(0)
-    const cartItems = useSelector((state: {cartReducer: CartState}) => state.cartReducer.cart)
+    const [cartCount, setCartCount] = useState<number>(0);
+    const [searchData, setSearchData] = useState<string>('');
+    const cartItems = useSelector((state: {cartReducer: CartState}) => state.cartReducer.cart);
     const user: User | null = useSelector((state: {userReducer: StateType})=> state.userReducer.user);
     const navigate = useNavigate();
-    const showBox = useBreakpointValue({base: false, lg: true})
+    const showBox = useBreakpointValue({base: false, lg: true});
+    const searchParams = new URLSearchParams()
     
 
     const getCartCount = () => {
@@ -117,6 +123,17 @@ const TopBar = () => {
     const goToDashboard = ()=> {
       navigate("/dashboard")
     }
+
+    const handleSearch = () => {
+    if (!searchData.trim()) return;
+    searchParams.set('name', searchData);
+    searchParams.set('description', searchData);
+    searchParams.set('genres', searchData);
+    searchParams.set('author', searchData);
+
+    navigate(`/search?${searchParams.toString()}`);
+  };
+
   return (
     <>
     <Box
@@ -143,8 +160,25 @@ const TopBar = () => {
             bg="black"
             px="10px"
             py="5px"
-            flex="1"
+            flex="2"
         >
+          <InputGroup size='md' mx={"3rem"}>
+            <Input
+              pr='4.5rem'
+              type="text"
+              placeholder='Searche bokks'
+              color='white'
+              onChange={(e)=>setSearchData(e.target.value)}
+              onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                handleSearch();
+              }
+            }}
+            />
+            <InputRightElement width='4.5rem'>
+              <FaSearch color='white' onClick={handleSearch}/>
+            </InputRightElement>
+          </InputGroup>
           <>
             {showBox && (
               <Box>

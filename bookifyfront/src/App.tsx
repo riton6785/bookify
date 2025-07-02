@@ -13,6 +13,7 @@ import Dashboard from './components/AdminDashboard/Dashboard'
 import EditProducts from './components/Products/EditProducts'
 import AdminProtectedValidator from './components/AdminDashboard/AdminProtectedValidator'
 import Unauthorized from './components/Miscellanious/Unauthorized'
+import SearchedProducts from './components/SearchProduct/SearchedProducts'
 
 const App = () => {
   return (
@@ -20,6 +21,7 @@ const App = () => {
         <TopBar/>
       <Routes>
         <Route path="/" element={<HomePage/>}/>
+        <Route path="/search" element={<SearchedProducts/>}/>
         {/* Protected dashboard section */}
         <Route
       path="/dashboard"

@@ -1,6 +1,7 @@
 const asyncHandler = require("express-async-handler");
 const Book = require("../Model/bookModel");
 const { setBooksintotheGenres } = require("./genres_controller");
+const Genres = require("../Model/genres_model");
 
 const createBookRecord = asyncHandler(async (req, res)=>{
     const {name, price, author, description, stock, publisher, pic, isPublished, userId, genres_ids} = req.body;
@@ -39,6 +40,25 @@ const getBooksForHomePage = asyncHandler(async(req
     res.send(books)
 })
 
+const getBooksSearchResult = asyncHandler(async(req, res)=> {
+    const {queryString} = req.query;
+    console.log(queryString);
+    // Find method using the regex oprtaor because direct find willdo the exact match 
+    const getGenresId = await Genres.find(
+        { name: { $regex: queryString, $options: 'i' } }, // contains
+        { _id: 1 }
+    );
+    const books = await Book.find({
+        $or: [
+            { name: { $regex: queryString, $options: 'i' } },
+            { author: { $regex: queryString, $options: 'i' } },
+            { description: { $regex: queryString, $options: 'i' } },
+            { genres_ids: { $in: getGenresId } },
+        ]
+    }, { stock: 0, isPublished: 0, __v: 0, updatedAt: 0, createdAt: 0 });
+    res.send(books);
+})
+
 const bookById = asyncHandler(async(req, res) => {
     const book = await Book.findById(req.query.id).populate('genres_ids', 'name');
     res.send(book)
@@ -54,4 +74,4 @@ const getProductsCount = asyncHandler(async(req, res)=> {
     res.send(data);
 })
 
-module.exports = {createBookRecord, getAllBooks, bookById, getBooksForHomePage, updateBookRecord, getProductsCount}
+module.exports = {createBookRecord, getAllBooks, bookById, getBooksForHomePage, updateBookRecord, getProductsCount, getBooksSearchResult}
