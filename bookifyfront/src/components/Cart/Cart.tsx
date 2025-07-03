@@ -4,12 +4,14 @@ import { useSelector } from 'react-redux'
 import CartItem from './CartItem';
 import { FaChevronCircleLeft, FaChevronCircleRight } from "react-icons/fa";
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const Cart = () => {
     const cartItems = useSelector((state: {cartReducer: CartState})=> state.cartReducer.cart);
     const totalBill = cartItems.map((item)=> item.product.price * item.quantity).reduce((acc: number, current: number) => acc + current, 0);
     const user: User | null = useSelector((state: {userReducer: StateType}) => state.userReducer.user);
     const toast = useToast();
+    const navigate = useNavigate();
     const config = {
         headers: {
           "Content-Type": "application/json",
@@ -56,6 +58,10 @@ const Cart = () => {
             });
         }
     }
+
+    const continueShopingHandler = ()=> {
+        navigate("/");
+    }
   return (
     <>
         <Box display={"flex"} alignItems={"flex-start"} justifyContent={"space-between"} width={"100%"} padding={"10px 20px"} flexWrap={"wrap"}>
@@ -98,7 +104,7 @@ const Cart = () => {
                         </Text>
                         <Box flex="1" borderBottom="1px solid #ccc" />
                     </Flex>
-                    <Button colorScheme='blue' variant='solid' gap={2}><FaChevronCircleLeft/> Continue Shopping</Button>
+                    <Button colorScheme='blue' variant='solid' gap={2} onClick={continueShopingHandler}><FaChevronCircleLeft/> Continue Shopping</Button>
                 </VStack>
             </Box>
         </Box>

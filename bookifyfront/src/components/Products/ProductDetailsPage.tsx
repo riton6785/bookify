@@ -166,16 +166,6 @@ const ProductDetailsPage = () => {
     
   }
 
-  const handleBuyNow = () => {
-    toast({
-      title: "Proceeding to checkout",
-      status: "info",
-      position: "top",
-      duration: 3000,
-      isClosable: true,
-    });
-  };
-
   const toggleWishListAction = async(ev: React.MouseEvent<HTMLButtonElement>) => {
     ev.preventDefault();
     if(!user || !book) {
@@ -276,6 +266,67 @@ const ProductDetailsPage = () => {
     }
   }
 
+  const proceedCheckout = async(): Promise<void | string | number> => {
+    if(!user) {
+      return toast({
+        title: "Please Login to add items to cart",
+        status: "error",
+        isClosable: true,
+        position: "top"
+      })
+    }
+    const productAndQuantities = [{
+      product_id: book?._id,
+      quantity: 1
+    }]
+    const config = {
+      headers: {
+        'content-type': 'application/json',
+        Authorization: `Bearer ${user?.token}`
+      }
+    }
+    try {
+      const { data: orderData } = await axios.post(
+        "http://localhost:2000/api/payment/process/payment",
+        { amount: book?.price, productAndQuantities },
+        config
+      );
+      const { data: keyData } = await axios.get(
+        "http://localhost:2000/api/payment/razorpaykey",
+        config
+      );
+      const {orders} = orderData;
+      const options = {
+        key: keyData.key, // Replace with your Razorpay key_id
+        amount: book?.price, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+        currency: "INR",
+        name: "Bookify ",
+        description: "One stop shop for all your book needs",
+        order_id: orders.id, // This is the order_id created in the backend
+        callback_url: `http://localhost:2000/api/payment/payment_verification?userId=${user?._id}`, // Your success URL
+        prefill: {
+          name: user?.name,
+          email: user?.email,
+          contact: "9999999999",
+        },
+        theme: {
+          color: "#F37254",
+        },
+      };
+
+      const rzp = new Razorpay(options);
+      rzp.open();
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Something went wrong while processing your payment.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+  }
+
   useEffect(()=> {
     fetchReviews(params.id);
   }, [])
@@ -330,7 +381,7 @@ const ProductDetailsPage = () => {
               variant="outline"
               onClick={toggleWishListAction}
             />
-            <Button colorScheme="green" onClick={handleBuyNow}>
+            <Button colorScheme="green" onClick={proceedCheckout}>
               Buy Now
             </Button>
           </HStack>

@@ -156,6 +156,67 @@ const ProductCard = ({book, key}: {book: Book, key: number}) => {
       }
     }
   }
+
+  const proceedCheckout = async(): Promise<void | string | number> => {
+    if(!user) {
+      return toast({
+        title: "Please Login to add items to cart",
+        status: "error",
+        isClosable: true,
+        position: "top"
+      })
+    }
+    const productAndQuantities = [{
+      product_id: book._id,
+      quantity: 1
+    }]
+    const config = {
+      headers: {
+        'content-type': 'application/json',
+        Authorization: `Bearer ${user?.token}`
+      }
+    }
+    try {
+      const { data: orderData } = await axios.post(
+        "http://localhost:2000/api/payment/process/payment",
+        { amount: book.price, productAndQuantities },
+        config
+      );
+      const { data: keyData } = await axios.get(
+        "http://localhost:2000/api/payment/razorpaykey",
+        config
+      );
+      const {orders} = orderData;
+      const options = {
+        key: keyData.key, // Replace with your Razorpay key_id
+        amount: book.price, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+        currency: "INR",
+        name: "Bookify ",
+        description: "One stop shop for all your book needs",
+        order_id: orders.id, // This is the order_id created in the backend
+        callback_url: `http://localhost:2000/api/payment/payment_verification?userId=${user?._id}`, // Your success URL
+        prefill: {
+          name: user?.name,
+          email: user?.email,
+          contact: "9999999999",
+        },
+        theme: {
+          color: "#F37254",
+        },
+      };
+
+      const rzp = new Razorpay(options);
+      rzp.open();
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Something went wrong while processing your payment.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+  }
   return (
     <Card maxW='sm' key={key} alignItems={"center"} justifyContent={"center"}>
       <Link to={`/book/${book._id}`}>
@@ -196,7 +257,7 @@ const ProductCard = ({book, key}: {book: Book, key: number}) => {
       <Divider />
       <CardFooter>
         <ButtonGroup spacing='2'>
-          <Button variant='solid' colorScheme='blue'>
+          <Button variant='solid' colorScheme='blue' onClick={proceedCheckout}>
             Buy now
           </Button>
           <Button variant='ghost' colorScheme='blue' onClick={isAddedToCart? removeFromCartAction: addToCartAction}>
