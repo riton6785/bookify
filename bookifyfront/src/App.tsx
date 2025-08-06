@@ -14,6 +14,7 @@ import EditProducts from './components/Products/EditProducts'
 import AdminProtectedValidator from './components/AdminDashboard/AdminProtectedValidator'
 import Unauthorized from './components/Miscellanious/Unauthorized'
 import SearchedProducts from './components/SearchProduct/SearchedProducts'
+import PaymentSuccess from './components/Miscellanious/PaymentSuccess'
 
 const App = () => {
   return (
@@ -58,6 +59,7 @@ const App = () => {
       }/>
         <Route path="/mycart" element={<Cart/>}/>
         <Route path="book/:id" element={<ProductDetailsPage/>}/>
+        <Route path="/payment_success" element={<PaymentSuccess/>}/>
         <Route path="*" element={<NotFound/>}/>
         <Route path="/unauthorized" element={<Unauthorized/>}/>
       </Routes>
