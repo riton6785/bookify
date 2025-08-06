@@ -17,6 +17,7 @@ const SaleOrderSchema = mongoose.Schema({
     ],
     totalAmount: {type: Number},
     date: {type: String},
+    invoice: {type: String},
 }, {
     timestamps: true,
 })

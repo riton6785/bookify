@@ -27,7 +27,6 @@ const Cart = () => {
             const {data: orderData} = await axios.post("http://localhost:2000/api/payment/process/payment",{amount: totalBill, productAndQuantities}, config) 
             const {data: keyData} = await axios.get("http://localhost:2000/api/payment/razorpaykey", config);
             const {orders} = orderData;
-            console.log(orders)
             const options = {
                 key: keyData.key, // Replace with your Razorpay key_id
                 amount: totalBill, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise

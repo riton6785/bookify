@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      color: #333;
+      background-color: #f9f9f9;
+    }
+
+    .invoice-container {
+      max-width: 800px;
+      margin: 20px auto;
+      background: #fff;
+      padding: 30px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      border-radius: 10px;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      border-bottom: 2px solid #4F46E5;
+      padding-bottom: 15px;
+      margin-bottom: 20px;
+    }
+
+    .logo {
+      width: 60px;
+      margin-right: 15px;
+    }
+
+    .company-name {
+      font-size: 28px;
+      font-weight: bold;
+      color: #4F46E5;
+    }
+
+    .invoice-details {
+      margin-bottom: 20px;
+    }
+
+    .invoice-details p {
+      margin: 4px 0;
+      font-size: 14px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      font-size: 14px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #f0f0f0;
+      font-weight: bold;
+    }
+
+    .total {
+      text-align: right;
+      font-size: 18px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .footer {
+      text-align: center;
+      font-size: 12px;
+      color: #999;
+      margin-top: 30px;
+    }
+  </style>
+</head>
+<body>
+  <div class="invoice-container">
+    <div class="header">
+      <img src="https://i.imgur.com/Oy4F8bk.png" alt="Bookify Logo" class="logo" />
+      <div class="company-name">Bookify</div>
+    </div>
+
+    <div class="invoice-details">
+      <p><strong>Invoice ID:</strong> {{_id}}</p>
+      <p><strong>User ID:</strong> {{userId}}</p>
+      <p><strong>Date:</strong> {{createdAt}}</p>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+            <th>#</th>
+            <th>Product Name</th>
+            <th>Quantity</th>
+            <th>Unit Price</th>
+            <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each productWithQuantity}}
+            <tr>
+                <td>{{@index}}</td>
+                <td>{{productName}}</td>
+                <td>{{quantity}}</td>
+                <td>${{unitPrice}}</td>
+                <td>${{totalPrice}}</td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+
+    <div class="total">
+      Grand Total: ${{totalAmount}}
+    </div>
+
+    <div class="footer">
+      Thank you for shopping with Bookify!
+    </div>
+  </div>
+</body>
+</html>
