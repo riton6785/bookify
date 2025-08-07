@@ -11,6 +11,7 @@ const createSaleOrder = asyncHandler((async(productAndQuantities, totalAmount, u
         userId,
         productwithquantity: productAndQuantities,
         totalAmount,
+        date: new Date().toISOString.split("T")[0]
     })
     invoiceData = await prepareInvoiceDataAndUpdateInventory(saleOrder, productAndQuantities, totalAmount, userId);
 

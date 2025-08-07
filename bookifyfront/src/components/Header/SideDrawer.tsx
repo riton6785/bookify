@@ -44,8 +44,6 @@ const SideDrawer = () => {
             <DrawerBody display="flex" flexDirection="column" alignItems="start">
                 <AuthenticationModel/>
                 <Button variant="ghost" colorScheme='teal' onClick={goToDashboard}>Dashboard</Button>
-                <Button variant="ghost" colorScheme='teal'>My account</Button>
-
             </DrawerBody>
 
             <DrawerFooter>

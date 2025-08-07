@@ -1,13 +1,14 @@
 import { useDisclosure, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, Image, ModalFooter, Text, Button } from '@chakra-ui/react';
-import React, { ReactNode } from 'react'
-import { Navigate, useNavigate } from 'react-router-dom';
+import { ReactNode } from 'react'
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 const Profile = ({children}: {children: ReactNode}) => {
-    const user: User = JSON.parse(localStorage.getItem("user-info"));
+    const user: User | null = useSelector((state: {userReducer: StateType}) => state.userReducer.user)
     const {isOpen, onOpen, onClose} = useDisclosure();
     const navigate = useNavigate();
-    const myProfile = () => {
-        navigate("/profile");
+    const myPurchase = () => {
+        navigate("/purchase");
         onClose();
     }
     return (
@@ -46,7 +47,7 @@ const Profile = ({children}: {children: ReactNode}) => {
                 </ModalBody>
                 <ModalFooter>
                     <Button colorScheme="blue" mr={3} onClick={onClose}>Close</Button>
-                    <Button variant="ghost" onClick={myProfile}>Account</Button>
+                    <Button variant="ghost" onClick={myPurchase}>Purchase</Button>
                 </ModalFooter>
             </ModalContent>
         </Modal>

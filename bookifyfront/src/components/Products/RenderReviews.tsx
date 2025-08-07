@@ -1,5 +1,4 @@
-import { Avatar, Box, HStack, VStack } from '@chakra-ui/react'
-import React from 'react'
+import { Avatar, HStack, VStack } from '@chakra-ui/react'
 import StarRendering from './StarRendering'
 
 const RenderReviews = ({review}: {review: ReviewData}) => {

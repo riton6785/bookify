@@ -1,5 +1,3 @@
-import React from 'react'
-
 import {  BrowserRouter, Route, Routes } from 'react-router-dom'
 import TopBar from './components/Header/Topbar'
 import AddProduct from './components/Products/AddProduct'
@@ -15,6 +13,7 @@ import AdminProtectedValidator from './components/AdminDashboard/AdminProtectedV
 import Unauthorized from './components/Miscellanious/Unauthorized'
 import SearchedProducts from './components/SearchProduct/SearchedProducts'
 import PaymentSuccess from './components/Miscellanious/PaymentSuccess'
+import UserProfile from './components/User/MyPurchases'
 
 const App = () => {
   return (
@@ -60,6 +59,7 @@ const App = () => {
         <Route path="/mycart" element={<Cart/>}/>
         <Route path="book/:id" element={<ProductDetailsPage/>}/>
         <Route path="/payment_success" element={<PaymentSuccess/>}/>
+        <Route path="/purchase" element={<UserProfile/>}/>
         <Route path="*" element={<NotFound/>}/>
         <Route path="/unauthorized" element={<Unauthorized/>}/>
       </Routes>

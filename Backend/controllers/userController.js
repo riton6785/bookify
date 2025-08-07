@@ -1,6 +1,7 @@
 const asyncHandler = require("express-async-handler");
 const User = require("../Model/usermodel");
 const OTP = require("../Model/otp_model")
+const SaleOrder = require("../Model/sale_order");
 const generateToken = require("../Config/generateToken");
 
 const registerUser = asyncHandler(async (req, res)=> {
@@ -131,4 +132,27 @@ const getUsersCount = asyncHandler(async(req, res)=> {
     const data = await User.countDocuments();
     res.send(data);
 })
-module.exports = {registerUser, loginUser, createUser, getAllUsers, toggleWishList, getWishList, getUsersCount}
+
+const getUserPurchases = asyncHandler(async(req, res) => {
+    const saleOrders = await SaleOrder.find({userId: req.query.userId}).populate({
+        path: 'productwithquantity.product_id',
+        select: 'name pic',
+    });
+    const finalData = saleOrders.map((order)=>{
+        return {
+            orderId: order._id,
+            products: order.productwithquantity.map((product)=> {
+                return {
+                    name: product.product_id.name,
+                    pic: product.product_id.pic,
+                }
+            }),
+            invoice: order.invoice,
+            data: order.date,
+            amount: order.totalAmount,
+        }
+    })
+    return res.json(finalData);
+})
+
+module.exports = {registerUser, loginUser, createUser, getAllUsers, toggleWishList, getWishList, getUsersCount, getUserPurchases}
