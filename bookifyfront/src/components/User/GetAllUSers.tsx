@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import UserListView from "./UserListView";
 import {
@@ -73,7 +73,6 @@ const GetAllUSers = () => {
             <Th>gender</Th>
             <Th>role</Th>
             <Th>Purchases</Th>
-            <Th textAlign="center">Actions</Th>
           </Tr>
         </Thead>
         <Tbody>

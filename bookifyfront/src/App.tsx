@@ -13,7 +13,8 @@ import AdminProtectedValidator from './components/AdminDashboard/AdminProtectedV
 import Unauthorized from './components/Miscellanious/Unauthorized'
 import SearchedProducts from './components/SearchProduct/SearchedProducts'
 import PaymentSuccess from './components/Miscellanious/PaymentSuccess'
-import UserProfile from './components/User/MyPurchases'
+import UsersPurchase from './components/AdminDashboard/UsersPurchase'
+import MyPurchase from './components/User/MyPurchases'
 
 const App = () => {
   return (
@@ -59,7 +60,8 @@ const App = () => {
         <Route path="/mycart" element={<Cart/>}/>
         <Route path="book/:id" element={<ProductDetailsPage/>}/>
         <Route path="/payment_success" element={<PaymentSuccess/>}/>
-        <Route path="/purchase" element={<UserProfile/>}/>
+        <Route path="/purchase" element={<MyPurchase/>}/>
+        <Route path="/:id/purchase" element={<UsersPurchase/>}/>
         <Route path="*" element={<NotFound/>}/>
         <Route path="/unauthorized" element={<Unauthorized/>}/>
       </Routes>

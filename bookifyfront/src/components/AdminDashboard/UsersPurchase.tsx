@@ -1,32 +1,23 @@
-import { Box, Grid, GridItem, useToast, VStack } from "@chakra-ui/react";
-import axios from "axios";
-import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import PurchaseCard from "../Products/PurchaseCard";
+import { Box, Grid, GridItem, useToast, VStack } from '@chakra-ui/react';
+import axios from 'axios';
+import { useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom'
+import PurchaseCard from '../Products/PurchaseCard';
+import { PurchaseData } from '../User/MyPurchases';
+import { useEffect, useState } from 'react';
 
-export interface PurchaseData {
-    orderId: string,
-    products: {
-        name: string,
-        pic: string,
-    }[]
-    invoice: string,
-    date: string,
-    amount: number,
-}
-const MyPurchase = () => {
-  const toast = useToast();
-  const user: User | null = useSelector(
-    (state: { userReducer: StateType }) => state.userReducer.user
-  );
-  const [purchaseData, setPurchaseData] = useState<PurchaseData[]>([])
+const UsersPurchase = () => {
+    const {id} = useParams();
+    const user: User | null = useSelector((state: {userReducer: StateType}) => state.userReducer.user)
+    const [purchaseData, setPurchaseData] = useState<PurchaseData[]>([]);
+    const toast = useToast();
 
-  const fetchPurchases = async () => {
+    const fetchPurchases = async () => {
     try {
       const { data } = await axios.get(
         "http://localhost:2000/api/user/getpurchases",
         {
-          params: { userId: user?._id },
+          params: { userId: id},
           headers: {
             Authorization: `Bearer ${user?.token}`,
           },
@@ -75,6 +66,6 @@ const MyPurchase = () => {
       </VStack>
     </Box>
   )
-};
+}
 
-export default MyPurchase;
+export default UsersPurchase
