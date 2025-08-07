@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { Link } from "react-router-dom"
 import { addToCart, toggleWishList, removeFromCart } from '../../Redux/cartslice'
 import axios from "axios";
+import { BASE_URL } from "../../config/config";
 
 const ProductCard = ({book, key}: {book: Book, key: number}) => {
   const user: User | null = useSelector((state: {userReducer: StateType})=> state.userReducer.user)
@@ -44,7 +45,7 @@ const ProductCard = ({book, key}: {book: Book, key: number}) => {
           Authorization: `Bearer ${user?.token}`
         }
       }
-      await axios.post("http://localhost:2000/api/cart/addtocart", {
+      await axios.post(`${BASE_URL}/cart/addtocart`, {
         bookId: book._id
       }, config)
       toast({
@@ -94,7 +95,7 @@ const ProductCard = ({book, key}: {book: Book, key: number}) => {
           Authorization: `Bearer ${user?.token}`
         }
       }
-      await axios.post("http://localhost:2000/api/cart/removeitem", {
+      await axios.post(`${BASE_URL}/cart/removeitem`, {
         productId: book._id,
         quantity
       }, config)
@@ -136,7 +137,7 @@ const ProductCard = ({book, key}: {book: Book, key: number}) => {
             Authorization: `Bearer ${user?.token}`
           }
         }
-        await axios.post("http://localhost:2000/api/user/toggewishlist",{bookId: book._id}, config)
+        await axios.post(`${BASE_URL}/user/toggewishlist`,{bookId: book._id}, config)
         toast({
           title: "Wishlist toggled successfully",
           status: "success",
@@ -178,12 +179,12 @@ const ProductCard = ({book, key}: {book: Book, key: number}) => {
     }
     try {
       const { data: orderData } = await axios.post(
-        "http://localhost:2000/api/payment/process/payment",
+        `${BASE_URL}/payment/process/payment`,
         { amount: book.price, productAndQuantities },
         config
       );
       const { data: keyData } = await axios.get(
-        "http://localhost:2000/api/payment/razorpaykey",
+        `${BASE_URL}/payment/razorpaykey`,
         config
       );
       const {orders} = orderData;
@@ -194,7 +195,7 @@ const ProductCard = ({book, key}: {book: Book, key: number}) => {
         name: "Bookify ",
         description: "One stop shop for all your book needs",
         order_id: orders.id, // This is the order_id created in the backend
-        callback_url: `http://localhost:2000/api/payment/payment_verification?userId=${user?._id}`, // Your success URL
+        callback_url: `${BASE_URL}/payment/payment_verification?userId=${user?._id}`, // Your success URL
         prefill: {
           name: user?.name,
           email: user?.email,

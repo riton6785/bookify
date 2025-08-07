@@ -16,6 +16,7 @@ import {
   toggleWishList,
 } from "../../Redux/cartslice";
 import { GiDuration } from "react-icons/gi";
+import { BASE_URL } from "../../config/config";
 
 const CartItem = ({ item }: { item: CartData }) => {
   const dispatch = useDispatch();
@@ -50,7 +51,7 @@ const CartItem = ({ item }: { item: CartData }) => {
         },
       };
       await axios.post(
-        "http://localhost:2000/api/cart/addtocart",
+        `${BASE_URL}/cart/addtocart`,
         {
           bookId: item.product._id,
         },
@@ -91,7 +92,7 @@ const CartItem = ({ item }: { item: CartData }) => {
         },
       };
       await axios.post(
-        "http://localhost:2000/api/cart/removeitem",
+        `${BASE_URL}/cart/removeitem`,
         {
           productId: item.product._id,
           quantity,
@@ -130,7 +131,7 @@ const CartItem = ({ item }: { item: CartData }) => {
           },
         };
         await axios.post(
-          "http://localhost:2000/api/user/toggewishlist",
+          `${BASE_URL}/user/toggewishlist`,
           { bookId: item.product._id },
           config
         );

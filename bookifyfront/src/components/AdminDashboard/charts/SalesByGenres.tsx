@@ -10,6 +10,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { Box, Heading, Select as ChakraSelect } from "@chakra-ui/react";
+import { BASE_URL } from "../../../config/config";
 
 const COLORS = [
   "#42A5F5",
@@ -46,7 +47,7 @@ const SalesByGenres = () => {
       },
     };
     const { data } = await axios.get(
-      "http://localhost:2000/api/charts/sale_genre_wise/count",
+      `${BASE_URL}/charts/sale_genre_wise/count`,
       config
     );
     console.log(data);

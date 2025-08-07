@@ -3,6 +3,7 @@ import axios from 'axios'
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { loginUser } from '../../Redux/slice'
+import { BASE_URL } from '../../config/config'
 
 const Login = ({onClose}: {onClose: ()=>void}) => {
     const [show, setShow] = useState<boolean>(false) 
@@ -18,7 +19,7 @@ const Login = ({onClose}: {onClose: ()=>void}) => {
     const submitHandler = async()=>{
         setLoading(true);
         try {
-          const response = await axios.post("http://localhost:2000/api/user/login", {
+          const response = await axios.post(`${BASE_URL}/user/login`, {
             email, password
           })
           toast({

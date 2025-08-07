@@ -5,6 +5,7 @@ import React, { useEffect } from 'react'
 import { useState } from 'react'
 import { useSelector } from 'react-redux';
 import { label } from 'framer-motion/client';
+import { BASE_URL } from '../../config/config';
 
 interface GenresForOption {
     value: string,
@@ -94,7 +95,7 @@ const AddProduct = () => {
                 }
             }
             const genres_ids = genreForBook?.map(genres => genres.value)
-            const { data } = await axios.post("http://localhost:2000/api/book/addbook", {
+            const { data } = await axios.post(`${BASE_URL}/book/addbook`, {
                 name, price, author, description, stock, publisher, pic, isPublished, userId: user?._id, genres_ids
             }, config)
             setLoading(false)
@@ -119,7 +120,7 @@ const AddProduct = () => {
             }
         }
         try {
-            const {data} = await axios.post("http://localhost:2000/api/genres/creategenre", {name: genres}, config)
+            const {data} = await axios.post(`${BASE_URL}/genres/creategenre`, {name: genres}, config)
             console.log(data);
         } catch (error) {
             toast({
@@ -140,7 +141,7 @@ const AddProduct = () => {
             }
         }
         try {
-            const {data} = await axios.get("http://localhost:2000/api/genres/getallgenres", config)
+            const {data} = await axios.get(`${BASE_URL}/genres/getallgenres`, config)
             setFetchedGenres(data);
         } catch (error) {
             toast({

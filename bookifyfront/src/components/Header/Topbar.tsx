@@ -23,6 +23,7 @@ import { addToCart, toggleWishList } from '../../Redux/cartslice';
 import axios from 'axios';
 import AuthenticationModel from './AuthenticationModel';
 import { FaSearch } from "react-icons/fa";
+import { BASE_URL } from '../../config/config';
 
 const TopBar = () => {
 
@@ -56,7 +57,7 @@ const TopBar = () => {
           Authorization: `Bearer ${user?.token}`
         }
       }
-      const {data} = await axios.get("http://localhost:2000/api/cart/getcartitems", config);
+      const {data} = await axios.get(`${BASE_URL}/cart/getcartitems`, config);
       if (data) {
         dispatch(addToCart(data));
       }
@@ -83,7 +84,7 @@ const TopBar = () => {
             Authorization: `Bearer ${user?.token}`
           }
         }
-        const {data} = await axios.get("http://localhost:2000/api/user/getwishlist", config);
+        const {data} = await axios.get(`${BASE_URL}/user/getwishlist`, config);
         for (const itemId of data.wishListItems) {
           dispatch(toggleWishList(itemId))
         }

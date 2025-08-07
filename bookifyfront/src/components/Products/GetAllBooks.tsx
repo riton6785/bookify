@@ -12,6 +12,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import BookListView from "./BookListView";
+import { BASE_URL } from "../../config/config";
 
 const GetAllBooks = () => {
   const user: User | null = useSelector(
@@ -28,7 +29,7 @@ const GetAllBooks = () => {
         },
       };
       const { data } = await axios.get(
-        `http://localhost:2000/api/book/getallbooks`,
+        `${BASE_URL}/book/getallbooks`,
         config
       );
       setBooks(data);

@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
 import { loginUser } from '../../Redux/slice';
+import { BASE_URL } from '../../config/config';
 const SIgnup = ({onClose}: {onClose: () => void;}) => {
   const [show, setShow] = useState<boolean>(false);
   const [loading, setLoading] = useState(false);
@@ -81,7 +82,7 @@ const SIgnup = ({onClose}: {onClose: () => void;}) => {
         return
       }
      try {
-      const response = await axios.post("http://localhost:2000/api/user/register", {
+      const response = await axios.post(`${BASE_URL}/user/register`, {
         name, email, password, profilePic, otp,
       });
       toast({
@@ -116,7 +117,7 @@ const SIgnup = ({onClose}: {onClose: () => void;}) => {
         },
       };
       const {data} = await axios.post(
-        "http://localhost:2000/api/otp/sendotp",
+        `${BASE_URL}/otp/sendotp`,
         {
           email: email,
         },

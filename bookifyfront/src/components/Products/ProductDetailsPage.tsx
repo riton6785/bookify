@@ -23,6 +23,7 @@ import { addToCart, removeFromCart, toggleWishList } from "../../Redux/cartslice
 import { addReview } from "../../Redux/review_slice";
 import RenderReviews from "./RenderReviews";
 import StarRendering from "./StarRendering";
+import { BASE_URL } from "../../config/config";
 
 
 const ProductDetailsPage = () => {
@@ -41,7 +42,7 @@ const ProductDetailsPage = () => {
     const averageReview: number = useSelector((state: {reviewReducer: ReviewState})=> state.reviewReducer.reviews.reduce((sum, curr)=> sum + curr.rating, 0) / totalReviews)
     const fetchBookById = async (id: string) => {
       try {
-          const { data } = await axios.get("http://localhost:2000/api/book/bookbyid", {
+          const { data } = await axios.get(`${BASE_URL}/book/bookbyid`, {
             params: { id },
             headers: {
               Authorization: `Bearer ${user?.token}`
@@ -90,7 +91,7 @@ const ProductDetailsPage = () => {
             Authorization: `Bearer ${user?.token}`
           }
         }
-        await axios.post("http://localhost:2000/api/cart/addtocart", {
+        await axios.post(`${BASE_URL}/cart/addtocart`, {
           bookId: book._id
         }, config)
         toast({
@@ -141,7 +142,7 @@ const ProductDetailsPage = () => {
             Authorization: `Bearer ${user?.token}`
           }
         }
-        await axios.post("http://localhost:2000/api/cart/removeitem", {
+        await axios.post(`${BASE_URL}/cart/removeitem`, {
           productId: book._id,
           quantity
         }, config)
@@ -185,7 +186,7 @@ const ProductDetailsPage = () => {
             Authorization: `Bearer ${user?.token}`
           }
         }
-        await axios.post("http://localhost:2000/api/user/toggewishlist",{bookId: book._id}, config)
+        await axios.post(`${BASE_URL}/user/toggewishlist`,{bookId: book._id}, config)
         toast({
           title: "Wishlist toggled successfully",
           status: "success",
@@ -223,7 +224,7 @@ const ProductDetailsPage = () => {
             Authorization: `Bearer ${user?.token}`          }
           }
           
-          const {data} = await axios.post("http://localhost:2000/api/review/postreview", {review: description, bookId: book._id, rating}, config);
+          const {data} = await axios.post(`${BASE_URL}/review/postreview`, {review: description, bookId: book._id, rating}, config);
           dispatch(addReview([data]))
           setDescription("")
         toast({
@@ -256,7 +257,7 @@ const ProductDetailsPage = () => {
         duration: 5000,
       })
     } else {
-       const { data } = await axios.get("http://localhost:2000/api/review/getreviewofbook", {
+       const { data } = await axios.get(`${BASE_URL}/review/getreviewofbook`, {
             params: { bookId: id },
             headers: {
               Authorization: `Bearer ${user?.token}`
@@ -287,12 +288,12 @@ const ProductDetailsPage = () => {
     }
     try {
       const { data: orderData } = await axios.post(
-        "http://localhost:2000/api/payment/process/payment",
+        `${BASE_URL}/payment/process/payment`,
         { amount: book?.price, productAndQuantities },
         config
       );
       const { data: keyData } = await axios.get(
-        "http://localhost:2000/api/payment/razorpaykey",
+        `${BASE_URL}/payment/razorpaykey`,
         config
       );
       const {orders} = orderData;
@@ -303,7 +304,7 @@ const ProductDetailsPage = () => {
         name: "Bookify ",
         description: "One stop shop for all your book needs",
         order_id: orders.id, // This is the order_id created in the backend
-        callback_url: `http://localhost:2000/api/payment/payment_verification?userId=${user?._id}`, // Your success URL
+        callback_url: `${BASE_URL}/payment/payment_verification?userId=${user?._id}`, // Your success URL
         prefill: {
           name: user?.name,
           email: user?.email,

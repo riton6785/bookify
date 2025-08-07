@@ -1,15 +1,15 @@
 import { Box, useToast } from "@chakra-ui/react";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
-import ProductCard from "../Products/ProductCard";
-import { addToCart, toggleWishList } from "../../Redux/cartslice";
+import { useEffect, useState } from "react";
+import ProductCard from "../Products/ProductCard"
+import { BASE_URL } from "../../config/config";
 
 const HomepageBooks = () => {
   const [books, setBooks] = useState<Book[]>();
   const toast = useToast();
   const fetchBooks = async (): Promise<void> => {
       try {
-        const {data} = await axios.get("http://localhost:2000/api/book/getbooksforhomepage")
+        const {data} = await axios.get(`${BASE_URL}/book/getbooksforhomepage`)
         const bookData: Book[] = data
         console.log(bookData)
         setBooks(bookData)

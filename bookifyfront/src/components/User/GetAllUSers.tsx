@@ -40,7 +40,7 @@ const GetAllUSers = () => {
       };
 
       const { data } = await axios.get(
-        `http://localhost:2000/api/user/getallusers`,
+        `${BASE_URL}/user/getallusers`,
         config
       );
       setAllUsers(data);

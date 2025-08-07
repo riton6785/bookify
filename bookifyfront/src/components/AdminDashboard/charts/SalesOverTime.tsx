@@ -12,6 +12,7 @@ import {
   ResponsiveContainer,
   Legend,
 } from "recharts";
+import { BASE_URL } from "../../../config/config";
 
 interface ScaleOptionsType {
   label: string;
@@ -41,7 +42,7 @@ const SalesOverTime = () => {
       },
     };
     const { data } = await axios.get(
-      "http://localhost:2000/api/charts/sale_over_time/count",
+      `${BASE_URL}/charts/sale_over_time/count`,
       config
     );
     setSalesData(data);

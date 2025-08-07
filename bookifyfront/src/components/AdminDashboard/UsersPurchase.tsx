@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom'
 import PurchaseCard from '../Products/PurchaseCard';
 import { PurchaseData } from '../User/MyPurchases';
 import { useEffect, useState } from 'react';
+import { BASE_URL } from '../../config/config';
 
 const UsersPurchase = () => {
     const {id} = useParams();
@@ -15,7 +16,7 @@ const UsersPurchase = () => {
     const fetchPurchases = async () => {
     try {
       const { data } = await axios.get(
-        "http://localhost:2000/api/user/getpurchases",
+        `${BASE_URL}/user/getpurchases`,
         {
           params: { userId: id},
           headers: {

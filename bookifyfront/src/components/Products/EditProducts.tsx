@@ -25,6 +25,7 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 import { label } from "framer-motion/client";
 import { useParams } from "react-router-dom";
+import { BASE_URL } from "../../config/config";
 
 interface GenresForOption {
   value: string;
@@ -83,7 +84,7 @@ const EditProducts = () => {
   ) => {
     try {
       const { data } = await axios.get(
-        "http://localhost:2000/api/book/bookbyid",
+        `${BASE_URL}/book/bookbyid`,
         {
           params: { id },
           headers: {
@@ -107,15 +108,14 @@ const EditProducts = () => {
   const SaveProduct = async () => {
     console.log("Buttonclickeddddddd");
     try {
-      const fields = ["name", "author"];
       const config = {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${user?.token}`,
         },
       };
-      const { data } = await axios.put(
-        `http://localhost:2000/api/book/updatebook/${bookDetail._id}`,
+      await axios.put(
+        `${BASE_URL}/book/updatebook/${bookDetail?._id}`,
         { changedFields },
         config
       );
@@ -146,8 +146,8 @@ const EditProducts = () => {
       },
     };
     try {
-      const { data } = await axios.post(
-        "http://localhost:2000/api/genres/creategenre",
+      await axios.post(
+        `${BASE_URL}/genres/creategenre`,
         { name: createGenres },
         config
       );
@@ -171,7 +171,7 @@ const EditProducts = () => {
     };
     try {
       const { data } = await axios.get(
-        "http://localhost:2000/api/genres/getallgenres",
+        `${BASE_URL}/genres/getallgenres`,
         config
       );
       setFetchedGenres(data);

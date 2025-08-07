@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 import SalesByGenres from './charts/SalesByGenres';
+import { BASE_URL } from '../../config/config';
 
 function Home() {
   const [productCount , setproductsCount] = useState<number>(0);
@@ -22,11 +23,11 @@ function Home() {
       },
 
     }
-    const totalUser = await axios.get("http://localhost:2000/api/user/getrecordcount", config);
+    const totalUser = await axios.get(`${BASE_URL}/user/getrecordcount`, config);
     setCustomersCount(totalUser.data);
-    const totalProduct = await axios.get("http://localhost:2000/api/book/getrecordcount", config)
+    const totalProduct = await axios.get(`${BASE_URL}/book/getrecordcount`, config)
     setproductsCount(totalProduct.data);
-    const totalCategory = await axios.get("http://localhost:2000/api/genres/getrecordcount", config);
+    const totalCategory = await axios.get(`${BASE_URL}/api/genres/getrecordcount`, config);
     setCategoryCount(totalCategory.data)
   })
   useEffect(()=> {

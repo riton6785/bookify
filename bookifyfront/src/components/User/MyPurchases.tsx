@@ -24,7 +24,7 @@ const MyPurchase = () => {
   const fetchPurchases = async () => {
     try {
       const { data } = await axios.get(
-        "http://localhost:2000/api/user/getpurchases",
+        `${BASE_URL}/user/getpurchases`,
         {
           params: { userId: user?._id },
           headers: {

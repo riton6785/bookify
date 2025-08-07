@@ -14,7 +14,7 @@ const SearchedProducts = () => {
     const queryString = searchParams.get('name');
     try {
       const { data } = await axios.get(
-        "http://localhost:2000/api/book/search/getbook", {
+        `${BASE_URL}/book/search/getbook`, {
             params: {queryString}
         }
       );

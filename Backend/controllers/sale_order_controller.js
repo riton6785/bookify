@@ -11,7 +11,7 @@ const createSaleOrder = asyncHandler((async(productAndQuantities, totalAmount, u
         userId,
         productwithquantity: productAndQuantities,
         totalAmount,
-        date: new Date().toISOString.split("T")[0]
+        date: new Date().toISOString().split("T")[0]
     })
     invoiceData = await prepareInvoiceDataAndUpdateInventory(saleOrder, productAndQuantities, totalAmount, userId);
 
@@ -34,14 +34,12 @@ const createSaleOrder = asyncHandler((async(productAndQuantities, totalAmount, u
 }))
 
 const sendInvoiceViaEmail = (async(email, updatedOrder) => {
-    console.log(email, "emailllllllllllllllllllll")
     try {
         const mailResponse = await mailSender(
         email,
         "Invoice Email",
         `<h1>Your invoice for orderId ${updatedOrder._id, updatedOrder.invoice}</h1>`
         );
-        console.log("Email sent successfully: ", mailResponse);
     } catch (error) {
         console.log("Error occurred while sending email: ", error);
         throw error;

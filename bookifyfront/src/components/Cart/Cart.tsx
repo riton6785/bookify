@@ -5,6 +5,7 @@ import CartItem from './CartItem';
 import { FaChevronCircleLeft, FaChevronCircleRight } from "react-icons/fa";
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { BASE_URL } from '../../config/config';
 
 const Cart = () => {
     const cartItems = useSelector((state: {cartReducer: CartState})=> state.cartReducer.cart);
@@ -24,8 +25,8 @@ const Cart = () => {
             quantity: item.quantity
         }));
         try {
-            const {data: orderData} = await axios.post("http://localhost:2000/api/payment/process/payment",{amount: totalBill, productAndQuantities}, config) 
-            const {data: keyData} = await axios.get("http://localhost:2000/api/payment/razorpaykey", config);
+            const {data: orderData} = await axios.post(`${BASE_URL}/payment/process/payment`,{amount: totalBill, productAndQuantities}, config) 
+            const {data: keyData} = await axios.get(`${BASE_URL}/payment/razorpaykey`, config);
             const {orders} = orderData;
             const options = {
                 key: keyData.key, // Replace with your Razorpay key_id
@@ -34,7 +35,7 @@ const Cart = () => {
                 name: 'Bookify ',
                 description: 'One stop shop for all your book needs',
                 order_id: orders.id, // This is the order_id created in the backend
-                callback_url: `http://localhost:2000/api/payment/payment_verification?userId=${user?._id}`, // Your success URL
+                callback_url: `${BASE_URL}/payment/payment_verification?userId=${user?._id}`, // Your success URL
                 prefill: {
                 name: user?.name,
                 email: user?.email,
