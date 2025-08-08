@@ -1,8 +1,9 @@
 import { Box, useToast } from "@chakra-ui/react";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import ProductCard from "../Products/ProductCard";
 import { useLocation } from "react-router-dom";
+import { BASE_URL } from "../../config/config";
 
 const SearchedProducts = () => {
     const location = useLocation();
@@ -21,7 +22,7 @@ const SearchedProducts = () => {
       const bookData: Book[] = data;
       console.log(bookData);
       setBooks(bookData);
-    } catch (error) {
+    } catch {
       toast({
         title: "Error fetching books",
         status: "error",

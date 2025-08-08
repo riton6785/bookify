@@ -1,4 +1,3 @@
-import React from "react";
 import { Tr, Td, Stack, IconButton, Image } from "@chakra-ui/react";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";

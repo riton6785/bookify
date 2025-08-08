@@ -1,5 +1,5 @@
 import { Box, Text } from '@chakra-ui/react'
-import React, { ReactNode } from 'react'
+import { ReactNode } from 'react'
 import { useSelector } from 'react-redux'
 import { Navigate } from 'react-router-dom'
 import AuthenticationModel from '../Header/AuthenticationModel'

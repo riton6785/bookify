@@ -27,7 +27,7 @@ function Home() {
     setCustomersCount(totalUser.data);
     const totalProduct = await axios.get(`${BASE_URL}/book/getrecordcount`, config)
     setproductsCount(totalProduct.data);
-    const totalCategory = await axios.get(`${BASE_URL}/api/genres/getrecordcount`, config);
+    const totalCategory = await axios.get(`${BASE_URL}/genres/getrecordcount`, config);
     setCategoryCount(totalCategory.data)
   })
   useEffect(()=> {

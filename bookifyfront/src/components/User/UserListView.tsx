@@ -1,6 +1,5 @@
 import { UserDetail } from "./GetAllUSers";
-import { Tr, Td, Stack, IconButton, Image, Button } from "@chakra-ui/react";
-import { FaEdit, FaTrash } from "react-icons/fa";
+import { Tr, Td, Image, Button } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 
 const UserListView = ({ user }: { user: UserDetail }) => {

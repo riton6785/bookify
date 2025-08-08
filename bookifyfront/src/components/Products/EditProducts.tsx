@@ -20,10 +20,9 @@ import {
 } from "@chakra-ui/react";
 import Select from "react-dropdown-select";
 import axios from "axios";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import { label } from "framer-motion/client";
 import { useParams } from "react-router-dom";
 import { BASE_URL } from "../../config/config";
 
@@ -46,21 +45,16 @@ const EditProducts = () => {
   const [name, setName] = useState<string>("");
   const [author, setAuthor] = useState<string>("");
   const [price, setPrice] = useState<number>(0);
-  const [pic, setPic] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [stock, setStock] = useState<number>(0);
+  //The reson for disabling es lint currently is we will use it in future refactors.
   const [loading, setLoading] = useState<boolean>(false);
   const [publisher, setPublisher] = useState<string>();
-  const [genres, setGenres] = useState<{ _id: string; name: string }[]>();
   const [createGenres, setCreateGenres] = useState<string>();
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [fetchedGenres, setFetchedGenres] = useState<GenresBasics[]>();
   const [allOptions, setAllOptions] = useState<GenresForOption[]>([]);
   const [initialOptions, setInitialOptions] = useState<GenresForOption[]>([]);
-  const [genreForBook, setGenreForBook] = useState<
-    GenresForOption[] | undefined
-  >();
   const [changedFields, setChangedFields] = useState<BookUpdate>({});
   const [bookDetail, setBookDetail] = useState<BookListDetails>();
   const user: User | null = useSelector(
@@ -76,7 +70,6 @@ const EditProducts = () => {
     setDescription(data.description);
     setStock(data.stock);
     setPublisher(data.publisher);
-    setGenres(data.genres_id);
   };
   const fetchProductDetails = async (
     id: string | undefined,
@@ -95,7 +88,7 @@ const EditProducts = () => {
       setBookDetail(data);
       setStatesFromCurrentDetails(data);
       const matched = options.filter((opt) =>
-        data.genres_ids.some((genre) => genre._id === opt.value)
+        data.genres_ids.some((genre: {_id: string, name: string}) => genre._id === opt.value)
       );
       setInitialOptions(matched);
     } catch (error) {
@@ -106,6 +99,7 @@ const EditProducts = () => {
 
   const SaveProduct = async () => {
     try {
+      setLoading(true);
       const config = {
         headers: {
           "Content-Type": "application/json",
@@ -117,6 +111,7 @@ const EditProducts = () => {
         { changedFields },
         config
       );
+      setLoading(false);
       setChangedFields({});
       toast({
         title: "Record updated successfully",
@@ -125,7 +120,8 @@ const EditProducts = () => {
         isClosable: true,
         position: "top",
       });
-    } catch (error) {
+    } catch {
+      setLoading(false);
       toast({
         title: "Error while updating record",
         status: "error",
@@ -149,9 +145,9 @@ const EditProducts = () => {
         { name: createGenres },
         config
       );
-    } catch (error) {
+    } catch {
       toast({
-        title: error.response.data,
+        title: "Error when creating genres",
         status: "error",
         duration: 5000,
         isClosable: true,
@@ -172,17 +168,16 @@ const EditProducts = () => {
         `${BASE_URL}/genres/getallgenres`,
         config
       );
-      setFetchedGenres(data);
       const mappedOptions =
-        data?.map((genre) => ({
+        data?.map((genre: {_id: string, name: string}) => ({
           value: genre._id,
           label: genre.name,
         })) || [];
       fetchProductDetails(params.id, mappedOptions);
       setAllOptions(mappedOptions);
-    } catch (error) {
+    } catch {
       toast({
-        title: error.response.data,
+        title: "Error while fetching genres",
         status: "error",
         duration: 5000,
         isClosable: true,
@@ -263,7 +258,7 @@ const EditProducts = () => {
           </HStack>
         </HStack>
       </Box>
-      <Box m={10} display="flex" flexDirection={{ base: "column ", md: "row" }}>
+      <Box m={10} display="flex" flexDirection={{ base: "column", md: "row" }}>
         <Box
           w="100%"
           m={3}
@@ -312,10 +307,6 @@ const EditProducts = () => {
                 }}
               />
             </FormControl>
-            {/* <FormControl id="book-image" isRequired>  Need to check image editing 
-                        <FormLabel>images</FormLabel>
-                        <Input placeholder='Enter the pic' type='file' p={1.5} accept='image/*' variant="filled" onChange={(e)=> handleImage(e.target.files[0])}/>
-                    </FormControl> */}
           </VStack>
           <VStack spacing={3} p={10} m={3} w={{ base: "100%", md: "45%" }}>
             <Text fontWeight={500} fontSize={20}>
@@ -360,15 +351,16 @@ const EditProducts = () => {
             <FormControl>
               {allOptions.length > 0 ? (
                 <FormControl id="book-genres">
-                  <FormLabel>Genres</FormLabel>
+                  {/* <FormLabel>Genres</FormLabel> */}
                   <Select
                     options={allOptions}
                     values={initialOptions}
                     onChange={(values) => {
-                      setGenreForBook(values);
                       handleGenresChanges(values);
                     }}
                     multi={true}
+                    onSelect={() => {}} // Required by types
+                    onDeselect={() => {}} // Required by types
                   />
                 </FormControl>
               ) : (

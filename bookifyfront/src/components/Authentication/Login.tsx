@@ -1,6 +1,6 @@
 import { Button, FormControl, FormLabel, Input, InputGroup, InputRightElement, VStack, useToast } from '@chakra-ui/react'
 import axios from 'axios'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { loginUser } from '../../Redux/slice'
 import { BASE_URL } from '../../config/config'
@@ -32,10 +32,9 @@ const Login = ({onClose}: {onClose: ()=>void}) => {
           localStorage.setItem('user-info', JSON.stringify(response.data))
           dispatch(loginUser(response.data))
           setLoading(false);
-        } catch (error) {
+        } catch {
           toast({
             title: "error occured",
-            description: error.response.data.message,
             status: "error",
             duration: 5000,
             isClosable: true,

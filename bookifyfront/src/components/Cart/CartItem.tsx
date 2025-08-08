@@ -1,5 +1,4 @@
 import {
-  Box,
   Button,
   HStack,
   Image,
@@ -8,14 +7,12 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import axios from "axios";
-import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addToCart,
   removeFromCart,
   toggleWishList,
 } from "../../Redux/cartslice";
-import { GiDuration } from "react-icons/gi";
 import { BASE_URL } from "../../config/config";
 
 const CartItem = ({ item }: { item: CartData }) => {
@@ -57,7 +54,7 @@ const CartItem = ({ item }: { item: CartData }) => {
         },
         config
       );
-    } catch (error) {
+    } catch {
       toast({
         title: "Error while increasing quantity",
         status: "error",
@@ -99,7 +96,7 @@ const CartItem = ({ item }: { item: CartData }) => {
         },
         config
       );
-    } catch (error) {
+    } catch {
       toast({
         title: "Error removing item from cart",
         status: "error",
@@ -142,7 +139,7 @@ const CartItem = ({ item }: { item: CartData }) => {
           position: "top",
           duration: 5000,
         });
-      } catch (error) {
+      } catch {
         toast({
           title: "Error adding item to wishlist",
           status: "error",

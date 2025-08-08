@@ -9,7 +9,7 @@ import {
   Heading,
 } from "@chakra-ui/react";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import BookListView from "./BookListView";
 import { BASE_URL } from "../../config/config";

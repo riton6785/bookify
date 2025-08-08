@@ -1,10 +1,9 @@
 import { Box, Button, HStack, Text, FormControl, Input, VStack, FormLabel, Textarea, useToast, useDisclosure, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter} from '@chakra-ui/react'
 import Select from "react-dropdown-select";
 import axios from 'axios';
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { useState } from 'react'
 import { useSelector } from 'react-redux';
-import { label } from 'framer-motion/client';
 import { BASE_URL } from '../../config/config';
 
 interface GenresForOption {
@@ -27,10 +26,10 @@ const AddProduct = () => {
     const [genreForBook, setGenreForBook] = useState<GenresForOption[] | undefined>();
     const user: User | null = useSelector((state: {userReducer: StateType})=> state.userReducer.user)
     
-    const options: GenresForOption[] | undefined = fetchedGenres?.map(genre=> ({
+    const options: GenresForOption[] | [] = fetchedGenres?.map(genre=> ({
         value: genre._id,
         label: genre.name
-    }))
+    })) || []
     const handleImage = (pic: File)=> {
         setLoading(true);
         if ( pic === undefined) {
@@ -95,14 +94,14 @@ const AddProduct = () => {
                 }
             }
             const genres_ids = genreForBook?.map(genres => genres.value)
-            const { data } = await axios.post(`${BASE_URL}/book/addbook`, {
+            await axios.post(`${BASE_URL}/book/addbook`, {
                 name, price, author, description, stock, publisher, pic, isPublished, userId: user?._id, genres_ids
             }, config)
             setLoading(false)
-        } catch (error) {
+        } catch {
             setLoading(false)
             toast({
-                title: error.response.data,
+                title: "Errro while adding book",
                 status: "error",
                 duration: 5000,
                 isClosable: true,
@@ -120,7 +119,7 @@ const AddProduct = () => {
         }
         try {
             await axios.post(`${BASE_URL}/genres/creategenre`, {name: genres}, config)
-        } catch (error) {
+        } catch {
             toast({
                 title: "Error creating genres",
                 status: "error",
@@ -141,9 +140,9 @@ const AddProduct = () => {
         try {
             const {data} = await axios.get(`${BASE_URL}/genres/getallgenres`, config)
             setFetchedGenres(data);
-        } catch (error) {
+        } catch {
             toast({
-                title: error.response.data,
+                title: "Error while creating genres",
                 status: "error",
                 duration: 5000,
                 isClosable: true,
@@ -189,7 +188,7 @@ const AddProduct = () => {
                 </HStack>
             </HStack>
         </Box>
-        <Box m={10} display="flex" flexDirection={{ base: "column ", md: "row" }}>
+        <Box m={10} display="flex" flexDirection={{ base: "column", md: "row" }}>
             <Box w="100%" m={3} display={{base:"", md: "flex"}} borderWidth={2} borderRadius={10}>
                 <VStack spacing={3} p={10} m={3} w={{base:"100%", md: "45%"}}>
                     <Text fontWeight={500} fontSize={20}> Enter the information </Text>
@@ -203,11 +202,16 @@ const AddProduct = () => {
                     </FormControl>
                     <FormControl id="book-price" isRequired>
                         <FormLabel>Price</FormLabel>
-                        <Input placeholder='Enter the Price' variant="filled" onChange={(e)=> setPrice(e.target.value)}/>
+                        <Input placeholder='Enter the Price' variant="filled" onChange={(e)=> setPrice(Number(e.target.value))}/>
                     </FormControl>
                     <FormControl id="book-image" isRequired>
                         <FormLabel>images</FormLabel>
-                        <Input placeholder='Enter the pic' type='file' p={1.5} accept='image/*' variant="filled" onChange={(e)=> handleImage(e.target.files[0])}/>
+                        <Input placeholder='Enter the pic' type='file' p={1.5} accept='image/*' variant="filled" onChange={(e) => {
+                            const file = e.target?.files?.[0]; // safely access the first file
+                            if (file) {
+                            handleImage(file); // pass the file to handleImage function
+                            }
+                        }}/>
                     </FormControl>
                 </VStack>
                 <VStack spacing={3} p={10} m={3} w={{base:"100%", md: "45%"}}>
@@ -218,7 +222,7 @@ const AddProduct = () => {
                     </FormControl>
                     <FormControl id='book-stock'>
                         <FormLabel>Stock</FormLabel>
-                        <Input placeholder='Enter the stock' variant="filled" onChange={(e)=> setStock(e.target.value)}/>
+                        <Input placeholder='Enter the stock' variant="filled" onChange={(e)=> setStock(Number(e.target.value))}/>
                     </FormControl>
                     <FormControl id='book-description'>
                         <FormLabel>Description</FormLabel>
@@ -226,7 +230,10 @@ const AddProduct = () => {
                     </FormControl>
                     <FormControl id='book-genres'>
                         <FormLabel>Genres</FormLabel>
-                        <Select options={options} onChange={(values) => setGenreForBook(values)} multi={true}/>;
+                        <Select options={options} onChange={(values) => setGenreForBook(values)} multi={true} values={[]}
+                            onSelect={() => {}} // Required by types may be we could use it in future.
+                            onDeselect={() => {}} // Required by types may be we could use it in future.
+                    />;
                     </FormControl>
                 </VStack>
             </Box>

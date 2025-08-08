@@ -12,7 +12,7 @@ const HomepageBooks = () => {
         const {data} = await axios.get(`${BASE_URL}/book/getbooksforhomepage`)
         const bookData: Book[] = data
         setBooks(bookData)
-      } catch (error) {
+      } catch {
         toast({
           title: "Error fetching books",
           status: "error",

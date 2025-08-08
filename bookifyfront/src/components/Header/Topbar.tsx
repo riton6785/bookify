@@ -3,8 +3,6 @@ import { Box, Button, Menu,
     MenuList,
     MenuItem,
     MenuDivider,
-    Icon,
-    Text,
     useToast,
     useBreakpointValue,
     InputGroup,
@@ -61,7 +59,7 @@ const TopBar = () => {
       if (data && !data.message) {
         dispatch(addToCart(data));
       }
-    } catch(error) {
+    } catch {
       toast({
         title: "Error fetching Cart",
         status: "error",
@@ -88,7 +86,7 @@ const TopBar = () => {
         for (const itemId of data.wishListItems) {
           dispatch(toggleWishList(itemId))
         }
-      } catch (error) {
+      } catch {
         toast({
           title: "Error fetching WishList",
           status: "error",

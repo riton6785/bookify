@@ -1,5 +1,4 @@
 import { Box, Button, Flex, HStack, Input, Text, useToast, VStack } from '@chakra-ui/react';
-import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 import CartItem from './CartItem';
 import { FaChevronCircleLeft, FaChevronCircleRight } from "react-icons/fa";
@@ -48,7 +47,7 @@ const Cart = () => {
 
             const rzp = new Razorpay(options);
             rzp.open();
-        } catch (error) {
+        } catch {
             toast({
                 title: "Error",
                 description: "Something went wrong while processing your payment.",

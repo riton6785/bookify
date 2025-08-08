@@ -1,7 +1,7 @@
-import { Box, Button, ButtonGroup, Card, CardBody, CardFooter, Divider, Heading, HStack, IconButton, Image, position, Stack, Text, useToast } from "@chakra-ui/react"
+import { Box, Button, ButtonGroup, Card, CardBody, CardFooter, Divider, Heading, IconButton, Image, Stack, Text, useToast } from "@chakra-ui/react"
 import { FaHeart } from 'react-icons/fa';
 
-import React, { useState } from 'react'
+import React from 'react'
 import { useDispatch, useSelector } from "react-redux"
 import { Link } from "react-router-dom"
 import { addToCart, toggleWishList, removeFromCart } from '../../Redux/cartslice'
@@ -19,7 +19,7 @@ const ProductCard = ({book, key}: {book: Book, key: number}) => {
 
   const addToCartAction = async() => {
     if(!user) {
-      toast({
+      return toast({
         title: "Please Login to add items to cart",
         status: "error",
         isClosable: true,
@@ -55,7 +55,7 @@ const ProductCard = ({book, key}: {book: Book, key: number}) => {
           position: "top",
           duration: 5000,
         })
-    } catch (error) {
+    } catch {
       toast({
         title: "Error adding item to cart",
         status: "error",
@@ -106,7 +106,7 @@ const ProductCard = ({book, key}: {book: Book, key: number}) => {
           position: "top",
           duration: 5000,
         })
-    } catch (error) {
+    } catch {
       toast({
         title: "Error removing item from cart",
         status: "error",
@@ -145,7 +145,7 @@ const ProductCard = ({book, key}: {book: Book, key: number}) => {
           position: "top",
           duration: 5000,
         })
-      } catch (error) {
+      } catch {
         toast({
           title: "Error adding item to wishlist",
           status: "error",
@@ -208,7 +208,7 @@ const ProductCard = ({book, key}: {book: Book, key: number}) => {
 
       const rzp = new Razorpay(options);
       rzp.open();
-    } catch (error) {
+    } catch {
       toast({
         title: "Error",
         description: "Something went wrong while processing your payment.",

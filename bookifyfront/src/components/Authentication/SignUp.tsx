@@ -1,5 +1,5 @@
 import { Button, FormControl, FormLabel, Input, InputGroup, InputRightElement, VStack, useToast } from '@chakra-ui/react';
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
 import { loginUser } from '../../Redux/slice';
@@ -12,7 +12,7 @@ const SIgnup = ({onClose}: {onClose: () => void;}) => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [confirmpassword, setConfirmpassword] = useState<string>("");
-  const [otp, setOtp] = useState<string>(0);
+  const [otp, setOtp] = useState<string>();
   const handleClick = () => setShow(!show);
   const toast = useToast();
   const dispatch = useDispatch();
@@ -44,6 +44,7 @@ const SIgnup = ({onClose}: {onClose: () => void;}) => {
           setLoading(false)
         })
         .catch((error)=> {
+          console.error(error)
           setLoading(false)
         })
        
@@ -96,10 +97,9 @@ const SIgnup = ({onClose}: {onClose: () => void;}) => {
       dispatch(loginUser(response.data))
       setLoading(false);
       onClose()
-     } catch (error) {
+     } catch {
       toast({
-        title: "error occured",
-        description: error.response.data.message,
+        title: "error While creating account",
         status: "error",
         duration: 5000,
         isClosable: true,
@@ -124,7 +124,7 @@ const SIgnup = ({onClose}: {onClose: () => void;}) => {
         config
       );
       
-    } catch (error) {
+    } catch {
       toast({
         title: "error occured",
         description: "Error occured while otp generation",
@@ -185,7 +185,12 @@ const SIgnup = ({onClose}: {onClose: () => void;}) => {
       </FormControl>
       <FormControl id='pic' isRequired>
         <FormLabel>Upload your glamorus pic</FormLabel>
-        <Input type='file' p={1.5} accept='image/*' onChange={(e)=> handleImage(e.target.files[0])}/>
+        <Input type='file' p={1.5} accept='image/*' onChange={(e) => {
+          const file = e.target?.files?.[0]; // safely access the first file
+          if (file) {
+            handleImage(file); // pass the file to handleImage function
+          }
+        }}/>
       </FormControl>
       <Button
           colorScheme='blue'

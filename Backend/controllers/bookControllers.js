@@ -67,6 +67,7 @@ const bookById = asyncHandler(async(req, res) => {
 const updateBookRecord = asyncHandler(async(req, res)=> {
     const {changedFields} = req.body;
     const book = await Book.findByIdAndUpdate(req.params.id, changedFields);
+    res.send("Updated succesfully")
 })
 
 const getProductsCount = asyncHandler(async(req, res)=> {

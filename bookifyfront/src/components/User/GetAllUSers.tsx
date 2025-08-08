@@ -45,7 +45,7 @@ const GetAllUSers = () => {
         config
       );
       setAllUsers(data);
-    } catch (error) {
+    } catch {
       toast({
         title: "Error fetching Users",
         status: "error",

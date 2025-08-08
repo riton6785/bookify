@@ -40,7 +40,7 @@ const ProductDetailsPage = () => {
     const allReviews: ReviewData[] = useSelector((state: {reviewReducer: ReviewState}) => state.reviewReducer.reviews)
     const totalReviews: number = useSelector((state: {reviewReducer: ReviewState})=> state.reviewReducer.reviews.length)
     const averageReview: number = useSelector((state: {reviewReducer: ReviewState})=> state.reviewReducer.reviews.reduce((sum, curr)=> sum + curr.rating, 0) / totalReviews)
-    const fetchBookById = async (id: string) => {
+    const fetchBookById = async (id: string | undefined) => {
       try {
           const { data } = await axios.get(`${BASE_URL}/book/bookbyid`, {
             params: { id },
@@ -58,7 +58,7 @@ const ProductDetailsPage = () => {
 
     useEffect(() => {
     const getBook = async () => {
-        const book = await fetchBookById( params.id );
+        const book = await fetchBookById( params?.id );
         setBook(book);
     };
     getBook();
@@ -101,7 +101,7 @@ const ProductDetailsPage = () => {
             position: "top",
             duration: 5000,
           })
-      } catch (error) {
+      } catch {
         toast({
           title: "Error adding item to cart",
           status: "error",
@@ -153,7 +153,7 @@ const ProductDetailsPage = () => {
             position: "top",
             duration: 5000,
           })
-      } catch (error) {
+      } catch {
         toast({
           title: "Error removing item from cart",
           status: "error",
@@ -194,7 +194,7 @@ const ProductDetailsPage = () => {
           position: "top",
           duration: 5000,
         })
-      } catch (error) {
+      } catch {
         toast({
           title: "Error adding item to wishlist",
           status: "error",
@@ -234,20 +234,19 @@ const ProductDetailsPage = () => {
           isClosable: true,
           duration: 5000,
         })
-      } catch (error) {
+      } catch {
         toast({
           title: "Error occured while posting the review",
           status: "error",
           isClosable: true,
           position: "bottom",
           duration: 5000,
-          description: error.response.data.message
         }) 
       }
     }
   }
 
-  const fetchReviews = async(id: string): Promise<void> => {
+  const fetchReviews = async(id: string | undefined): Promise<void> => {
     if (!user) {
       toast({
         title: "NO user or book found",
@@ -317,7 +316,7 @@ const ProductDetailsPage = () => {
 
       const rzp = new Razorpay(options);
       rzp.open();
-    } catch (error) {
+    } catch {
       toast({
         title: "Error",
         description: "Something went wrong while processing your payment.",

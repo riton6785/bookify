@@ -91,17 +91,17 @@ const SalesByGenres = () => {
             nameKey="genre"
             cx="50%"
             cy="50%"
-            outerRadius={160} // 🔼 increased
+            outerRadius={160} // increased
             innerRadius={80} // optional, for donut effect
             fill="#8884d8"
             label={({ genre, percent }) =>
-              `${genre} (${(percent * 100).toFixed(0)}%)`
+              `${genre} (${((percent ?? 0) * 100).toFixed(0)}%)`
             }
           >
-            {countwiseData?.map((entry, index) => (
+            {countwiseData?.map((index) => (
               <Cell
                 key={`cell-${index}`}
-                fill={COLORS[index % COLORS.length]}
+                fill={COLORS[index.data % COLORS.length]}
               />
             ))}
           </Pie>

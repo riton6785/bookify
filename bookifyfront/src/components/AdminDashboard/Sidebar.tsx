@@ -1,7 +1,5 @@
-import React from 'react'
 import 
-{BsCart3, BsGrid1X2Fill, BsFillArchiveFill, BsFillGrid3X3GapFill, BsPeopleFill, 
-  BsListCheck}
+{BsCart3, BsGrid1X2Fill, BsFillArchiveFill, BsFillGrid3X3GapFill, BsPeopleFill}
  from 'react-icons/bs'
 import { Link } from 'react-router-dom'
 
@@ -40,11 +38,6 @@ function Sidebar({openSidebarToggle, OpenSidebar}: SideBarProps) {
             <li className='sidebar-list-item'>
                 <Link to="alluser">
                     <BsPeopleFill className='icon'/> All users
-                </Link>
-            </li>
-            <li className='sidebar-list-item'>
-                <Link to="createuser">
-                    <BsListCheck className='icon'/> Crteate user
                 </Link>
             </li>
         </ul>

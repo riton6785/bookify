@@ -74,3 +74,6 @@ interface GenresBasics {
     name: string,
     _id: string,
 }
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+declare let Razorpay: any;  // Require to declare type here as e need it to create razorpay instance and it is not importing from any package so type script will give error while creating instance that's why declared type it is just a way to avoid typescript type error.

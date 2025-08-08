@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import reducer from "./slice";
 
 const initialState: ReviewState = {
     reviews: []

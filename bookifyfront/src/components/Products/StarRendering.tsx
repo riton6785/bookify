@@ -1,5 +1,4 @@
 import { HStack } from '@chakra-ui/react';
-import React from 'react'
 import { FaRegStar, FaStar, FaStarHalfAlt } from 'react-icons/fa';
 
 const StarRendering = ({rating}: {rating: number}) => {
