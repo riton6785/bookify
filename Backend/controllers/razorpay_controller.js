@@ -37,7 +37,7 @@ const paymentVerification = asyncHandler(async (req, res) => {
         const order = await razorpayInstance.orders.fetch(razorpay_order_id);
         createSaleOrder(order.notes.productAndQuantities, order.amount/100, req.query.userId);
         await Cart.deleteOne({user: req.query.userId});
-        return res.redirect(`http://localhost:5173/payment_success?reference=${razorpay_payment_id}`);
+        return res.redirect(`https://bookify-alpha-gules.vercel.app/payment_success?reference=${razorpay_payment_id}`);
     } else {
 
         res.status(404).json({
