@@ -41,7 +41,7 @@ const getCartItems = asyncHandler (async(req, res) => {
     if(cartItems) {
         res.status(200).json(cartItems.product);
     } else {
-        return res.status(404).json({message: "No cart items found"});
+        res.status(200).json({message: "No cart items found"});
     }
 })
 

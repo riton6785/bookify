@@ -11,7 +11,6 @@ const HomepageBooks = () => {
       try {
         const {data} = await axios.get(`${BASE_URL}/book/getbooksforhomepage`)
         const bookData: Book[] = data
-        console.log(bookData)
         setBooks(bookData)
       } catch (error) {
         toast({

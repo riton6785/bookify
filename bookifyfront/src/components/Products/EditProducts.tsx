@@ -97,7 +97,6 @@ const EditProducts = () => {
       const matched = options.filter((opt) =>
         data.genres_ids.some((genre) => genre._id === opt.value)
       );
-      console.log(matched, options, data, "Fetch Product details");
       setInitialOptions(matched);
     } catch (error) {
       console.error("Failed to fetch book by ID:", error);
@@ -106,7 +105,6 @@ const EditProducts = () => {
   };
 
   const SaveProduct = async () => {
-    console.log("Buttonclickeddddddd");
     try {
       const config = {
         headers: {
@@ -180,8 +178,6 @@ const EditProducts = () => {
           value: genre._id,
           label: genre.name,
         })) || [];
-
-      console.log(data, "Fetched genres handler");
       fetchProductDetails(params.id, mappedOptions);
       setAllOptions(mappedOptions);
     } catch (error) {

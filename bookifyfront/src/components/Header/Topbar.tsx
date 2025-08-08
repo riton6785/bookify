@@ -58,7 +58,7 @@ const TopBar = () => {
         }
       }
       const {data} = await axios.get(`${BASE_URL}/cart/getcartitems`, config);
-      if (data) {
+      if (data && !data.message) {
         dispatch(addToCart(data));
       }
     } catch(error) {
@@ -112,6 +112,7 @@ const TopBar = () => {
     const logoutHandler = ()=>{
         dispatch(logoutUser());
         localStorage.removeItem('user-info');
+        navigate("/");
         toast({
             title: "Logged out successfully",
             status: "success",

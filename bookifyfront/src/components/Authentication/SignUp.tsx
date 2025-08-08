@@ -116,19 +116,18 @@ const SIgnup = ({onClose}: {onClose: () => void;}) => {
           "Content-Type": "application/json",
         },
       };
-      const {data} = await axios.post(
+      await axios.post(
         `${BASE_URL}/otp/sendotp`,
         {
           email: email,
         },
         config
       );
-      console.log("Dataaaaaaaaaaaaaa", data);
       
     } catch (error) {
       toast({
         title: "error occured",
-        description: error.response.data.message,
+        description: "Error occured while otp generation",
         status: "error",
         duration: 5000,
         isClosable: true,

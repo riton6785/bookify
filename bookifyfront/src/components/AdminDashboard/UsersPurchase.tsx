@@ -24,7 +24,6 @@ const UsersPurchase = () => {
           },
         }
       );
-      console.log(data);
       setPurchaseData(data);
     } catch (error) {
       toast({

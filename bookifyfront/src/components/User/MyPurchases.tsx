@@ -3,6 +3,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import PurchaseCard from "../Products/PurchaseCard";
+import { BASE_URL } from "../../config/config";
 
 export interface PurchaseData {
     orderId: string,
@@ -32,7 +33,6 @@ const MyPurchase = () => {
           },
         }
       );
-      console.log(data);
       setPurchaseData(data);
     } catch (error) {
       toast({

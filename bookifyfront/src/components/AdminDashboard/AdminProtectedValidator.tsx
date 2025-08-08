@@ -10,7 +10,6 @@ type AdminProtectedValidatorProps = {
 }
 const AdminProtectedValidator = (props: AdminProtectedValidatorProps) => {
     const user: User | null = useSelector((state:{userReducer: StateType}) => state.userReducer.user)
-    console.log(user)
   if (!user) {
     return(
       <Box display={"flex"} flexDirection={"column"} alignItems={"center"} justifyContent={"center"} height={"100vh"}>

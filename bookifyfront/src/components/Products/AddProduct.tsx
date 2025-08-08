@@ -112,7 +112,6 @@ const AddProduct = () => {
     }
 
     const createGenres = async()=> {
-        console.log(genres)
         const config = {
             headers: {
                 "Content-Type": "application/json",
@@ -120,11 +119,10 @@ const AddProduct = () => {
             }
         }
         try {
-            const {data} = await axios.post(`${BASE_URL}/genres/creategenre`, {name: genres}, config)
-            console.log(data);
+            await axios.post(`${BASE_URL}/genres/creategenre`, {name: genres}, config)
         } catch (error) {
             toast({
-                title: error.response.data,
+                title: "Error creating genres",
                 status: "error",
                 duration: 5000,
                 isClosable: true,

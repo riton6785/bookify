@@ -8,7 +8,6 @@ const BookListView = ({ book }: { book: BookListDetails }) => {
   const navigate = useNavigate()
   const editProductHandler = (()=> {
     navigate(`/editproduct/${book._id}`)
-    console.log(book)
   })
   return (
     <Tr key={book._id}>

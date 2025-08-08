@@ -50,7 +50,6 @@ const SalesByGenres = () => {
       `${BASE_URL}/charts/sale_genre_wise/count`,
       config
     );
-    console.log(data);
     setCountWiseData(data);
   };
 

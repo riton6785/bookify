@@ -12,6 +12,7 @@ import {
   Th,
   Heading,
 } from "@chakra-ui/react";
+import { BASE_URL } from "../../config/config";
 
 export interface UserDetail {
   createdAt: string;
@@ -44,7 +45,6 @@ const GetAllUSers = () => {
         config
       );
       setAllUsers(data);
-      console.log(data);
     } catch (error) {
       toast({
         title: "Error fetching Users",
@@ -77,7 +77,7 @@ const GetAllUSers = () => {
         </Thead>
         <Tbody>
           {allusers.map((user) => (
-            <UserListView user={user} />
+            <UserListView user={user} key={user._id}/>
           ))}
         </Tbody>
       </Table>
